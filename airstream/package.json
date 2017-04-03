@@ -3,9 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "d3": "^4.7.4",
+    "leaflet": "^1.0.3",
     "react": "^15.4.2",
+    "react-d3-library": "^1.1.8",
+    "react-d3-map": "^0.8.3",
     "react-dom": "^15.4.2",
-    "semantic-ui-react": "^0.67.2"
+    "react-faux-dom": "^3.0.1",
+    "react-leaflet": "^1.1.4",
+    "semantic-ui-react": "^0.67.2",
+    "topojson": "^3.0.0"
   },
   "devDependencies": {
     "react-scripts": "0.9.5"
