@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import { Button, Dropdown, Menu, Icon } from 'semantic-ui-react'
+import React, { Component } from 'react'
+import logo from './logo.svg'
+import './App.css'
+import { Header, Button, Dropdown, Menu, Icon } from 'semantic-ui-react'
 
 class App extends Component {
   state = { activeItem: 'home' }
@@ -9,13 +9,16 @@ class App extends Component {
   render() {
     const { activeItem } = this.state
     return (
-      <div className="App">
+      <div>
 
+        <div>
         <Menu size='huge'>
-        <Menu.Item name='home' active={activeItem === 'home'} onClick={this.handleItemClick} />
-        <Menu.Item name='messages' active={activeItem === 'messages'} onClick={this.handleItemClick} />
+          <Header style={styles.header} size='large'>airstream</Header>
 
         <Menu.Menu position='right'>
+          <Menu.Item name='home' active={activeItem === 'home'} onClick={this.handleItemClick} />
+          <Menu.Item name='messages' active={activeItem === 'messages'} onClick={this.handleItemClick} />
+
           <Dropdown item text='Language'>
             <Dropdown.Menu>
               <Dropdown.Item>English</Dropdown.Item>
@@ -32,21 +35,19 @@ class App extends Component {
           </Menu.Item>
         </Menu.Menu>
       </Menu>
-
-        <div className="App-header">
-          <h2>airstream</h2>
-        </div>
-        <div>
-          <Button primary animated>
-            <Button.Content visible>Next</Button.Content>
-            <Button.Content hidden>
-              <Icon name="right arrow" />
-            </Button.Content>
-          </Button>
-        </div>
       </div>
-    );
+      </div>
+    )
   }
 }
 
-export default App;
+const styles = {
+  header: {
+    display: 'flex',
+    paddingTop: '0.5em',
+    paddingLeft: '0.5em',
+  },
+}
+
+
+export default App
