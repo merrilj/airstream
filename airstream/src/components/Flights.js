@@ -44,26 +44,26 @@ export default class Flights extends Component {
       .then((data) => {
         this.setState({ plane: data.data.response })
         var flights = this.state.plane
-        // flights.map((data) => {
-        //   var lat = data.geography.lat
-        //   var lng = data.geography.lng
-        //   var alt = data.geography.alt
-        //   var speed = data.speed.horizontal
-        //   var arrival = data.arrival_code
-        //   var departure = data.departure_code
-        //   var aircraft = data.flight.aircraft_code
-        //   var flightNum = data.flight.name
-        //
-        //   var marker = L.marker([lat, lng], {icon: planeIcon}).addTo(map)
-        //    marker.bindPopup(`
-        //     <b>Flight ${flightNum}</b>
-        //     <br>${aircraft}
-        //     <br>${speed} mph
-        //     <br>${alt} ft
-        //     <br>From ${departure}
-        //     <br>To ${arrival}
-        //   `)
-        // })
+        flights.map((data) => {
+          var lat = data.geography.lat
+          var lng = data.geography.lng
+          var alt = data.geography.alt
+          var speed = data.speed.horizontal
+          var arrival = data.arrival_code
+          var departure = data.departure_code
+          var aircraft = data.flight.aircraft_code
+          var flightNum = data.flight.name
+
+          var marker = L.marker([lat, lng], {icon: planeIcon}).addTo(map)
+           marker.bindPopup(`
+            <b>Flight ${flightNum}</b>
+            <br>${aircraft}
+            <br>${speed} mph
+            <br>${alt} ft
+            <br>From ${departure}
+            <br>To ${arrival}
+          `)
+        })
       })
   }
 
