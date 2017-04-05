@@ -3,10 +3,10 @@ import logo from './logo.svg'
 import './App.css'
 import { Header, Container, Button, Dropdown, Menu, Icon, Image, Reveal, Card, Item } from 'semantic-ui-react'
 // import Map from './d3file'
-import Map from './Map'
-// import Leaflet from './Leaflet'
+import Flights from './components/Flights'
+import Airports from './components/Airports'
 
-class App extends Component {
+export default class App extends Component {
   state = { activeItem: 'home' }
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
   render() {
@@ -42,7 +42,7 @@ class App extends Component {
 
       <div>
         <Container style={styles.container}>
-          <Map />
+          <Airports />
         </Container>
       </div>
       </div>
@@ -62,6 +62,3 @@ const styles = {
     width: '95%',
   }
 }
-
-
-export default App
