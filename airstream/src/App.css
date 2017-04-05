@@ -22,6 +22,22 @@
   padding: 1em;
 }
 
+.map-selected {
+  fill: #E3DA37;
+}
+
+.map-unselected {
+  fill: #699EAA;
+}
+
+.map-selected:hover, .map-unselected:hover {
+  cursor: pointer;
+}
+
+#map {
+  height: 50vh;
+}
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }

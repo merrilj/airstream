@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import logo from './logo.svg'
 import './App.css'
 import { Header, Container, Button, Dropdown, Menu, Icon, Image, Reveal, Card, Item } from 'semantic-ui-react'
-// import Map from './Map'
-import Leaflet from './Leaflet'
+// import Map from './d3file'
+import Map from './Map'
+// import Leaflet from './Leaflet'
 
 class App extends Component {
   state = { activeItem: 'home' }
@@ -40,8 +41,8 @@ class App extends Component {
       </div>
 
       <div>
-        <Container>
-          <Leaflet />
+        <Container style={styles.container}>
+          <Map />
         </Container>
       </div>
       </div>
@@ -56,6 +57,10 @@ const styles = {
     paddingLeft: '0.5em',
   },
 
+  container: {
+    padding: '2em',
+    width: '95%',
+  }
 }
 
 

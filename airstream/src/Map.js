@@ -1,39 +1,35 @@
 import React from 'react'
-import * as d3 from 'd3'
-import Faux from 'react-faux-dom'
+import { render } from 'react-dom'
+import L from 'leaflet'
 
-const MyReactClass = React.createClass({
-  mixins: [
-    Faux.mixins.core,
-    Faux.mixins.anim
-  ],
-
-  getInitialState () {
-    return {
-      chart: 'loading...'
-    }
-  },
-
-  componentDidMount () {
-    const faux = this.connectFauxDOM('div.renderedD3', 'chart')
-
-    d3.select(faux)
-      .append('div')
-      .html('Hey World!')
-
-    this.animateFauxDOM(800)
-  },
-
-  render () {
-    return (
-      <div>
-        <h2>Here is some fancy data:</h2>
-        <div className='renderedD3'>
-          {this.state.chart}
-        </div>
-      </div>
-    )
+export default class Mapbox extends React.Component {
+  componentDidMount() {
+    this.map()
   }
-})
 
-export default MyReactClass
+  map() {
+
+    var map = new L.Map("map", {center: [37.8, -96.9], zoom: 4})
+    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+   }).addTo(map);
+
+   var marker = L.marker([37.8, -96.9]).addTo(map)
+
+   marker.bindPopup("<b>Wow! I am elated!</b><br>This is awesome!").openPopup()
+
+   var popup = L.popup()
+   function onMapClick(e) {
+     popup
+      .setLatLng(e.latlng)
+      .setContent("You clicked the map at " + e.latlng.toString())
+      .openOn(map)
+   }
+   map.on('click', onMapClick)
+}
+
+
+ render() {
+   return <div id="map">xx</div>
+ }
+}
