@@ -3,6 +3,7 @@ import { Input } from 'semantic-ui-react'
 import SearchInput, { createFilter } from 'react-search-input'
 import L from 'leaflet'
 import IC from 'iatacodes'
+import swal from 'sweetalert'
 
 const ic = new IC('772513cb-42b7-4262-b735-00d2f52eb796')
 
@@ -18,12 +19,14 @@ export default class Airports extends Component {
       icon: null,
       smallIcon: null,
       arrivalLat: [],
-      arrivalLng: []
+      arrivalLng: [],
+      popup: null,
+      popupOptions: null
     }
   }
 
   componentDidMount() {
-    this.getAirports()
+    this.newMap()
   }
 
   handleChange(e) {
@@ -53,57 +56,47 @@ export default class Airports extends Component {
         marker.bindPopup(`
           <b>${name}</b>
           <br>Phone Number: ${phone}
-          <br><a href=${website} target="_blank">Visit Our Website</a>
+          <br><button id="popup-btn"><a href=${website} target="_blank">Visit Our Website</a></button>
+          <button id="popup-btn">See Flights</button>
         `)
       })
 
       ic.api('timetable', {code: new_code, type: 'departure'}, (error, response) => {
-        let departureCode = []
-        let arrivalCode = []
-        let arrivalLat
-        let arrivalLng
-        let airlineName
-        let departureTime
-        let arrivalTime
-        let arrivalCity
-        let departureCity
-        let aircraftCode
-        let flightNumber
-        let status
-        
-        response.map( (data) => {
-          arrivalCode.push(data.arrival_code)
-          airlineName = data.flight.airline_name
-          departureTime = data.departure_time
-          arrivalTime = data.arrival_time
-          arrivalCity = data.arrival_code
-          departureCity = data.departure_code
-          aircraftCode = data.flight.aircraft_code
-          flightNumber = data.flight.number
-          status = data.status
+        let flights = {}
+        response.forEach((data) => {
+          if (!flights[data.arrival_code]) {
+            flights[data.arrival_code] = []
+          }
+          flights[data.arrival_code].push(data)
         })
+
+        let arrivalCode = []
+        for (var key in flights) {
+          arrivalCode.push(key)
+        }
+
           ic.api('airports', {code: arrivalCode}, (error, response) => {
-            response.map((data) => {
-              arrivalLat = data.lat
-              arrivalLng = data.lng
-              console.log(arrivalLat)
+            response.forEach((data) => {
+              let arrivalLat = data.lat
+              let arrivalLng = data.lng
+
+              let popup = `<h4>${data.code} Flights</h4>`
+              flights[data.code].forEach((flight) => {
+                popup += `<br>${flight.flight.airline_name} ${flight.flight.number}`
+                popup += `<br>From ${flight.departure_code}`
+                popup += `<br>To ${flight.arrival_code}`
+                popup += `<br>Departing ${flight.departure_time}`
+                popup += `<br>Arriving ${flight.arrival_time}`
+                popup += `<br>Status - ${flight.status}`
+              })
 
               let marker = L.marker([arrivalLat, arrivalLng], {icon: this.state.smallIcon}).addTo(this.state.map)
-              marker.bindPopup(`
-                <b>${airlineName}</b>
-                <br>Flight ${flightNumber}
-                <br>From ${departureCity}
-                <br>To ${arrivalCity}
-                <br>Departing ${departureTime}
-                <br>Arriving ${arrivalTime}
-                <br>Status - ${status}
-              `)
+              marker.bindPopup(popup)
+
             })
           })
 
       })
-
-
     }
 
     if (new_code.length < 3) {
@@ -112,7 +105,7 @@ export default class Airports extends Component {
 
   }
 
-  getAirports() {
+  newMap() {
     var newMap = new L.Map("map", {center: [37.8, -96.9], zoom: 3})
     L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -128,8 +121,8 @@ export default class Airports extends Component {
    this.setState({icon: airportIcon})
 
    var arrivalIcon = L.icon({
-     iconUrl: 'https://cdn3.iconfinder.com/data/icons/map/500/airport-512.png',
-     iconSize: [10, 10],
+     iconUrl: 'https://cdn4.iconfinder.com/data/icons/vehicle-and-logistics/30/airplane-arrive-512.png',
+     iconSize: [15, 15],
    })
 
    this.setState({smallIcon: arrivalIcon})
