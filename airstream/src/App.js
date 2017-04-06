@@ -5,6 +5,7 @@ import { Header, Container, Button, Dropdown, Menu, Icon, Image, Reveal, Card, I
 // import Map from './d3file'
 import Flights from './components/Flights'
 import Airports from './components/Airports'
+import Routes from './components/Routes'
 
 export default class App extends Component {
   state = { activeItem: 'home' }
@@ -31,7 +32,7 @@ export default class App extends Component {
           </Dropdown>
 
           <Menu.Item>
-            <Button primary animated>
+            <Button color='teal' animated>
               <Button.Content visible>Sign In</Button.Content>
               <Button.Content hidden>or Sign Up</Button.Content>
             </Button>
@@ -41,7 +42,7 @@ export default class App extends Component {
       </div>
 
       <div>
-        <Container style={styles.container}>
+        <Container>
           <Airports />
         </Container>
       </div>

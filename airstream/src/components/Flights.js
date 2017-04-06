@@ -69,7 +69,14 @@ export default class Flights extends Component {
 
   render() {
    return (
-     <div id="map"></div>
+     <div id="map" style={styles.map}></div>
    )
  }
+}
+
+const styles = {
+  map: {
+    height: '80vh',
+    width: '100%',
+  }
 }
