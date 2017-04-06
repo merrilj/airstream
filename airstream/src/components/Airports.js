@@ -3,7 +3,6 @@ import { Input } from 'semantic-ui-react'
 import SearchInput, { createFilter } from 'react-search-input'
 import L from 'leaflet'
 import IC from 'iatacodes'
-import swal from 'sweetalert'
 
 const ic = new IC('772513cb-42b7-4262-b735-00d2f52eb796')
 
@@ -18,10 +17,10 @@ export default class Airports extends Component {
       map: null,
       icon: null,
       smallIcon: null,
-      arrivalLat: [],
-      arrivalLng: [],
       popup: null,
-      popupOptions: null
+      popupOptions: null,
+      lat: null,
+      lng: null
     }
   }
 
@@ -37,6 +36,8 @@ export default class Airports extends Component {
         let data = response[0]
         let lat = data.lat
         let lng = data.lng
+        this.setState({lat: lat})
+        this.setState({lng: lng})
         let phone
         if (data.phone.length > 0) {
           phone = data.phone
@@ -51,7 +52,7 @@ export default class Airports extends Component {
         }
 
         let marker = L.marker([lat, lng], {icon: this.state.icon}).addTo(this.state.map)
-        this.state.map.flyTo([lat, lng], 12)
+        this.state.map.flyTo([lat, lng], 4)
 
         marker.bindPopup(`
           <b>${name}</b>
@@ -79,8 +80,7 @@ export default class Airports extends Component {
             response.forEach((data) => {
               let arrivalLat = data.lat
               let arrivalLng = data.lng
-
-              let popup = `<h4>${data.code} Flights</h4>`
+              let popup = `<h4>Flights from ${new_code.toUpperCase()} to ${data.code}</h4>`
               flights[data.code].forEach((flight) => {
                 popup += `<br>${flight.flight.airline_name} ${flight.flight.number}`
                 popup += `<br>From ${flight.departure_code}`
@@ -89,10 +89,17 @@ export default class Airports extends Component {
                 popup += `<br>Arriving ${flight.arrival_time}`
                 popup += `<br>Status - ${flight.status}`
               })
-
               let marker = L.marker([arrivalLat, arrivalLng], {icon: this.state.smallIcon}).addTo(this.state.map)
               marker.bindPopup(popup)
 
+              let polyline = L.polyline([
+                [arrivalLat, arrivalLng],
+                [this.state.lat, this.state.lng]],
+                {
+                  color: 'teal',
+                  weight: 2,
+                  opacity: 0.7,
+                }).addTo(this.state.map)
             })
           })
 
@@ -100,13 +107,13 @@ export default class Airports extends Component {
     }
 
     if (new_code.length < 3) {
-      this.state.map.flyTo([37.8, -96.9], 3)
+      this.state.map.flyTo([37.8, -96.9], 2)
     }
 
   }
 
   newMap() {
-    var newMap = new L.Map("map", {center: [37.8, -96.9], zoom: 3})
+    var newMap = new L.Map("map", {center: [37.8, -96.9], zoom: 2})
     L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
    }).addTo(newMap);
@@ -121,11 +128,19 @@ export default class Airports extends Component {
    this.setState({icon: airportIcon})
 
    var arrivalIcon = L.icon({
-     iconUrl: 'https://cdn4.iconfinder.com/data/icons/vehicle-and-logistics/30/airplane-arrive-512.png',
+     iconUrl: 'https://cdn3.iconfinder.com/data/icons/basicolor-transportation/24/264_airport_flight_arrival-512.png',
      iconSize: [15, 15],
    })
 
    this.setState({smallIcon: arrivalIcon})
+
+  //  var polyline = L.polyline([[25.2048, 55.2708],
+  //  [37.8, -96.9]],
+  //  {
+  //    color: 'blue',
+  //    opacity: 0.7,
+  //  }).addTo(newMap)
+
  }
 
   render() {
