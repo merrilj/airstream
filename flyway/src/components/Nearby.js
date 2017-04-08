@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Button, Modal } from 'semantic-ui-react'
 import L from 'leaflet'
 import IC from 'iatacodes'
 
@@ -16,12 +17,14 @@ export default class Nearby extends Component {
       smallIcon: null,
       lat: [],
       lng: [],
-      airports: []
+      airports: [],
+      open: false
     }
   }
 
   componentDidMount() {
     this.createMap()
+    this.nearby()
   }
 
   nearby() {
@@ -67,21 +70,21 @@ export default class Nearby extends Component {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(newMap);
 
-      this.setState({map: newMap})
+      // this.setState({map: newMap})
 
       var airportIcon = L.icon({
         iconUrl: 'https://cdn3.iconfinder.com/data/icons/map/500/airport-512.png',
         iconSize: [30, 35],
       })
 
-      this.setState({icon: airportIcon})
+      // this.setState({icon: airportIcon})
 
       var arrivalIcon = L.icon({
         iconUrl: 'https://cdn3.iconfinder.com/data/icons/basicolor-transportation/24/264_airport_flight_arrival-512.png',
         iconSize: [15, 15],
       })
 
-      this.setState({smallIcon: arrivalIcon})
+      // this.setState({smallIcon: arrivalIcon})
 
     }
 
@@ -89,6 +92,7 @@ export default class Nearby extends Component {
   render() {
     return (
       <div id="map" style={styles.map}></div>
+
     )
   }
 

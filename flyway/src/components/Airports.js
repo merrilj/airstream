@@ -91,7 +91,7 @@ export default class Airports extends Component {
                 if (flight.departure_time !== undefined) {
                   popup += `<p id="flight-times">Departing ${flight.departure_time}</p>`
                 } else {
-                  popup += `<p id="flight-times">Private Jet</p>`
+                  popup += `<p id="flight-times">Private Flight</p>`
                 }
                 if (flight.departure_time !== undefined) {
                   popup += `<p id="flight-times">Arriving ${flight.arrival_time}</p>`

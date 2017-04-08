@@ -43,7 +43,7 @@ export default class App extends Component {
 
       <div>
         <Container>
-          <Nearby />
+          <Airports />
         </Container>
       </div>
       </div>
