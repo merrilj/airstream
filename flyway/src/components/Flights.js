@@ -24,27 +24,18 @@ export default class Flights extends Component {
      iconUrl: 'https://cdn2.iconfinder.com/data/icons/app-types-in-grey/512/airplane_512pxGREY.png',
      shadowUrl: '',
 
-     iconSize: [30, 30],
+     iconSize: [20, 20],
     //  shadowSize: [10, 10],
     //  iconAnchor: [20, 20],
     //  shadowAnchor: [22, 94],
     //  popupAnchor: [-3, -76]
    })
 
-   var popup = L.popup()
-   function onMapClick(e) {
-     popup
-      .setLatLng(e.latlng)
-      .setContent("You clicked the map at " + e.latlng.toString())
-      .openOn(map)
-   }
-   map.on('click', onMapClick)
-
     return axios.get('https://iatacodes.org/api/v6/flights?api_key=772513cb-42b7-4262-b735-00d2f52eb796')
       .then((data) => {
         this.setState({ plane: data.data.response })
         var flights = this.state.plane
-        flights.map((data) => {
+        flights.forEach((data) => {
           var lat = data.geography.lat
           var lng = data.geography.lng
           var alt = data.geography.alt
@@ -55,13 +46,13 @@ export default class Flights extends Component {
           var flightNum = data.flight.name
 
           var marker = L.marker([lat, lng], {icon: planeIcon}).addTo(map)
-           marker.bindPopup(`
-            <b>Flight ${flightNum}</b>
-            <br>${aircraft}
-            <br>${speed} mph
-            <br>${alt} ft
-            <br>From ${departure}
-            <br>To ${arrival}
+           marker.bindPopup(`<div id="flight-popup">
+            <p id="flight-num">Flight ${flightNum}</p>
+            <p id="flight-aircraft">${aircraft}</p>
+            <p id="flight-dep">From ${departure}</p>
+            <p id="flight-arr">To ${arrival}</p></div>
+            <p id="flight-alt">${alt} ft</p>
+            <p id="flight-speed">${speed} mph</p>
           `)
         })
       })

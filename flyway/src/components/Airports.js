@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { Input } from 'semantic-ui-react'
-import SearchInput, { createFilter } from 'react-search-input'
 import L from 'leaflet'
 import IC from 'iatacodes'
 
+import 'leaflet.polyline.snakeanim'
 const ic = new IC('772513cb-42b7-4262-b735-00d2f52eb796')
 
 export default class Airports extends Component {
@@ -33,17 +33,18 @@ export default class Airports extends Component {
     this.setState({code: new_code})
     if (new_code.length === 3) {
       ic.api('airports', {code: new_code}, (error, response) => {
+        if (response[0].icao.length > 1) {
         let data = response[0]
         let lat = data.lat
         let lng = data.lng
         this.setState({lat: lat})
         this.setState({lng: lng})
         let phone
-        if (data.phone.length > 0) {
+        if (data.phone.length !== undefined) {
           phone = data.phone
         }
         let website
-        if (data.website.length > 0) {
+        if (data.website.length !== undefined) {
           website = data.website
         }
         let name = data.name
@@ -56,10 +57,11 @@ export default class Airports extends Component {
 
         marker.bindPopup(`
           <b>${name}</b>
-          <br>Phone Number: ${phone}
+          <br>${phone}
           <br><button id="popup-btn"><a href=${website} target="_blank">Visit Our Website</a></button>
           <button id="popup-btn">See Flights</button>
         `)
+      }
       })
 
       ic.api('timetable', {code: new_code, type: 'departure'}, (error, response) => {
@@ -80,26 +82,43 @@ export default class Airports extends Component {
             response.forEach((data) => {
               let arrivalLat = data.lat
               let arrivalLng = data.lng
-              let popup = `<h4>Flights from ${new_code.toUpperCase()} to ${data.code}</h4>`
+              let popup = `<div class="leaflet-popup-content"><h3 class="leaflet-header">Flights from ${new_code.toUpperCase()} to ${data.code}</h3></div>`
               flights[data.code].forEach((flight) => {
-                popup += `<br>${flight.flight.airline_name} ${flight.flight.number}`
-                popup += `<br>From ${flight.departure_code}`
-                popup += `<br>To ${flight.arrival_code}`
-                popup += `<br>Departing ${flight.departure_time}`
-                popup += `<br>Arriving ${flight.arrival_time}`
-                popup += `<br>Status - ${flight.status}`
+                popup += `<p id="flight-number">${flight.flight.airline_name} ${flight.flight.number}</p>`
+                if (flight.flight.aircraft_code !== undefined) {
+                  popup += `<p id="aircraft">${flight.flight.aircraft_code} Aircraft</p>`
+                }
+                if (flight.departure_time !== undefined) {
+                  popup += `<p id="flight-times">Departing ${flight.departure_time}</p>`
+                } else {
+                  popup += `<p id="flight-times">Private Jet</p>`
+                }
+                if (flight.departure_time !== undefined) {
+                  popup += `<p id="flight-times">Arriving ${flight.arrival_time}</p>`
+                }
+                if (flight.status === 'cancelled') {
+                  popup += `<p id="flight-status-cancelled"> ${flight.status.charAt(0).toUpperCase() + flight.status.slice(1)}</p><hr>`
+                }
+                if (flight.status === 'flight') {
+                  popup += `<p id="flight-status"> In ${flight.status.charAt(0).toUpperCase() + flight.status.slice(1)}</p><hr>`
+                }
+                if (flight.status !== 'flight' && flight.status !== 'cancelled') {
+                  popup += `<p id="flight-status"> ${flight.status.charAt(0).toUpperCase() + flight.status.slice(1)}</p><hr>`
+                }
+
               })
               let marker = L.marker([arrivalLat, arrivalLng], {icon: this.state.smallIcon}).addTo(this.state.map)
               marker.bindPopup(popup)
 
               let polyline = L.polyline([
-                [arrivalLat, arrivalLng],
-                [this.state.lat, this.state.lng]],
+                [this.state.lat, this.state.lng],
+                [arrivalLat, arrivalLng]],
                 {
                   color: 'teal',
                   weight: 2,
                   opacity: 0.7,
-                }).addTo(this.state.map)
+                })
+              polyline.addTo(this.state.map).snakeIn()
             })
           })
 
@@ -133,14 +152,6 @@ export default class Airports extends Component {
    })
 
    this.setState({smallIcon: arrivalIcon})
-
-  //  var polyline = L.polyline([[25.2048, 55.2708],
-  //  [37.8, -96.9]],
-  //  {
-  //    color: 'blue',
-  //    opacity: 0.7,
-  //  }).addTo(newMap)
-
  }
 
   render() {

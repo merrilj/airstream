@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import logo from './logo.svg'
 import './App.css'
-import { Header, Container, Button, Dropdown, Menu, Icon, Image, Reveal, Card, Item } from 'semantic-ui-react'
-// import Map from './d3file'
+import { Header, Container, Button, Dropdown, Menu } from 'semantic-ui-react'
 import Flights from './components/Flights'
 import Airports from './components/Airports'
-import Routes from './components/Routes'
+import Welcome from './components/Welcome'
+import Userdash from './components/Userdash'
+import Nearby from './components/Nearby'
 
 export default class App extends Component {
   state = { activeItem: 'home' }
@@ -43,7 +43,7 @@ export default class App extends Component {
 
       <div>
         <Container>
-          <Airports />
+          <Nearby />
         </Container>
       </div>
       </div>
