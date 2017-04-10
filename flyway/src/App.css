@@ -77,15 +77,15 @@ body {
   padding-left: 1em;
   margin-right: 0;
   margin-left: 0;
-  height: 250px;
-  max-width: 350px;
   overflow-y: scroll;
+  height: 150px;
 }
 
 #leaflet-header {
   margin-left: 0;
   margin-right: 0;
   margin-top: 0;
+  margin-bottom: 0.2em;
   text-align: center;
   font-family: 'Work Sans', sans-serif;
   font-size: 1.8em;
@@ -143,10 +143,6 @@ p {
   width: 115px;
 }
 
-.leaflet-popup-content {
-  height: 160px;
-}
-
 #flight-num {
   margin-top: 0;
   margin-bottom: 0;
@@ -187,6 +183,20 @@ p {
 
 #modalTitle {
   font-family: 'Work Sans', sans-serif;
+
+}
+
+#airportTitle {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 1.3em;
+}
+
+#airportPhone {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 1.2em;
+}
+
+#websiteBtn {
 
 }
 

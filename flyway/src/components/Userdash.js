@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { Header, Image, Button, Modal, Input, Card, Icon } from 'semantic-ui-react'
+import { BounceDown, RollIn, Swing, Hatch, Entrance, Pulse, Flash, LightOut, LightIn, Flip, FadeInLeftBig } from 'animate-components'
+
 import Airports from './Airports'
 import Flights from './Flights'
 import Nearby from './Nearby'
@@ -41,8 +43,8 @@ export default class UserDash extends Component {
       <div>
 
         <div style={styles.mainPage}>
+        <BounceDown>
           <Card.Group itemsPerRow={2}>
-
             <Card style={styles.card} onClick={this.showAirports('blurring')}>
               <Card.Content style={styles.cardHeader} header='Search for Airports' />
               <Card.Content style={styles.cardP} description="Search for airports around the world and see their direct flights." />
@@ -79,6 +81,7 @@ export default class UserDash extends Component {
               </Card.Content>
             </Card>
           </Card.Group>
+          </BounceDown>
         </div>
 
         <Modal dimmer={dimmer} open={openAirports} onClose={this.closeAirports}>
@@ -134,6 +137,7 @@ const styles = {
     paddingTop: '0',
     paddingBottom: '0',
     fontFamily: 'Work Sans, sans-serif',
+    color: 'gray'
   },
   cardP: {
     fontFamily: 'Work Sans, sans-serif',
@@ -153,7 +157,9 @@ const styles = {
     paddingTop: '6em',
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    paddingLeft: '10em',
+    paddingRight: '10em'
   },
   card: {
     borderRadius: '8px'

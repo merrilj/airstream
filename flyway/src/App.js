@@ -18,6 +18,7 @@ export default class App extends Component {
           <Header style={styles.header} size='large'>flyway</Header>
 
 
+
       </Menu>
       </div>
 
@@ -35,7 +36,7 @@ let imgUrl = 'http://wallpapercave.com/wp/AGAQ0Vy.jpg'
 
 const styles = {
   header: {
-
+    color: 'gray',
     paddingTop: '0.3em',
     paddingLeft: '0.5em',
     fontFamily: 'Electrolize, sans-serif',
@@ -55,8 +56,9 @@ const styles = {
     width: '95%',
   },
 
-  signIn: {
-
+  menuButton: {
+    fontSize: '1.5em',
+    height: '100%'
   }
 
 }

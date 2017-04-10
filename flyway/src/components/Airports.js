@@ -172,6 +172,7 @@ export default class Airports extends Component {
                   let arriving = flight.arrival_time.substring(0, 16).replace(/T/i, ' at ')
                   popup += `<p id="flight-times">Arriving ${arriving}</p>`
                 }
+                if (flight.status !== 'unknown') {
                 if (flight.status === 'cancelled') {
                   popup += `<p id="flight-status-cancelled"> ${flight.status.charAt(0).toUpperCase() + flight.status.slice(1)}</p><hr>`
                 }
@@ -181,7 +182,7 @@ export default class Airports extends Component {
                 if (flight.status !== 'flight' && flight.status !== 'cancelled') {
                   popup += `<p id="flight-status"> ${flight.status.charAt(0).toUpperCase() + flight.status.slice(1)}</p><hr>`
                 }
-
+              }
               })
               let marker = L.marker([departureLat, departureLng], {icon: this.state.smallIcon}).addTo(this.state.map)
               marker.bindPopup(popup)
