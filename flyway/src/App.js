@@ -1,12 +1,9 @@
 import React, { Component } from 'react'
 import './App.css'
 import { Header, Container, Button, Dropdown, Menu } from 'semantic-ui-react'
-import Flights from './components/Flights'
-import Airports from './components/Airports'
+
 import Welcome from './components/Welcome'
 import Userdash from './components/Userdash'
-import Nearby from './components/Nearby'
-import Cards from './components/Cards'
 
 export default class App extends Component {
   state = { activeItem: 'home' }

@@ -13,14 +13,25 @@ export default class UserDash extends Component {
   }
 }
 
-  state = { open: false }
+  state = {
+    openAirports: false,
+    openNearby: false,
+    openFlights: false
+  }
 
-  show = (dimmer) => () => this.setState({ dimmer, open: true })
-  close = () => this.setState({ open: false })
+  showAirports = (dimmer) => () => this.setState({ dimmer, openAirports: true })
+  closeAirports = () => this.setState({ openAirports: false })
+
+  showNearby = (dimmer) => () => this.setState({ dimmer, openNearby: true })
+  closeNearby = () => this.setState({ openNearby: false })
+
+  showFlights = (dimmer) => () => this.setState({ dimmer, openFlights: true })
+  closeFlights = () => this.setState({ openFlights: false })
+
 
 
   render() {
-    const { open, dimmer } = this.state
+    const { openAirports, openNearby, openFlights, dimmer } = this.state
     const distance = this.state.distance
 
     return (
@@ -29,7 +40,7 @@ export default class UserDash extends Component {
         <div style={styles.mainPage}>
           <Card.Group itemsPerRow={2}>
 
-            <Card style={styles.card} onClick={this.show('blurring')}>
+            <Card style={styles.card} onClick={this.showAirports('blurring')}>
               <Card.Content style={styles.cardHeader} header='Search for Airports' />
               <Card.Content style={styles.cardP} description="Search for airports around the world and see their direct flights." />
               <Card.Content extra>
@@ -38,7 +49,7 @@ export default class UserDash extends Component {
               </Card.Content>
             </Card>
 
-            <Card style={styles.card} onClick={this.show('blurring')}>
+            <Card style={styles.card} onClick={this.showNearby('blurring')}>
               <Card.Content style={styles.cardHeader} header='Nearby Airports' />
               <Card.Content style={styles.cardP} description="Find airports near you and their nonstop flights." />
               <Card.Content extra>
@@ -47,7 +58,7 @@ export default class UserDash extends Component {
               </Card.Content>
             </Card>
 
-        <Card style={styles.card} onClick={Airports}>
+        <Card style={styles.card} onClick={this.showFlights('blurring')}>
           <Card.Content style={styles.cardHeader} header='Active Flights' />
           <Card.Content style={styles.cardP} description="See thousands of current active flights." />
           <Card.Content extra>
@@ -55,33 +66,38 @@ export default class UserDash extends Component {
             4 Friends
           </Card.Content>
         </Card>
-
-
-
-
-
-        <Card style={styles.card} onClick={this.show('blurring')}>
-          <Card.Content style={styles.cardHeader} header='Favorite Airports' />
-          <Card.Content style={styles.cardP} description="View your saved airports here." />
-          <Card.Content extra>
-            <Icon name='heart' />
-            My Favorites
-          </Card.Content>
-        </Card>
-      </Card.Group>
+        </Card.Group>
         </div>
 
-        <Modal dimmer={dimmer} open={open} onClose={this.close}>
+        <Modal dimmer={dimmer} open={openAirports} onClose={this.closeAirports}>
+          <Modal.Header style={styles.modalHeader}>Search All Airports</Modal.Header>
+          <Modal.Content image>
+            <Airports />
+          </Modal.Content>
+          <Modal.Actions>
+            <Button style={styles.closeButton} color='teal' icon='checkmark' labelPosition='right' content="Close" onClick={this.closeAirports} />
+          </Modal.Actions>
+        </Modal>
+
+        <Modal dimmer={dimmer} open={openNearby} onClose={this.closeNearby}>
           <Modal.Header style={styles.modalHeader}>Search All Airports</Modal.Header>
           <Modal.Content image>
             <Nearby />
           </Modal.Content>
           <Modal.Actions>
-            <Button style={styles.closeButton} color='teal' icon='checkmark' labelPosition='right' content="Close" onClick={this.close} />
+            <Button style={styles.closeButton} color='teal' icon='checkmark' labelPosition='right' content="Close" onClick={this.closeNearby} />
           </Modal.Actions>
         </Modal>
 
-
+        <Modal dimmer={dimmer} open={openFlights} onClose={this.closeFlights}>
+          <Modal.Header style={styles.modalHeader}>Search All Airports</Modal.Header>
+          <Modal.Content image>
+            <Flights />
+          </Modal.Content>
+          <Modal.Actions>
+            <Button style={styles.closeButton} color='teal' icon='checkmark' labelPosition='right' content="Close" onClick={this.closeFlights} />
+          </Modal.Actions>
+        </Modal>
       </div>
     )
   }
