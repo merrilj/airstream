@@ -4,13 +4,11 @@ import Airports from './Airports'
 import Flights from './Flights'
 import Nearby from './Nearby'
 
-export default class UserDash extends Component {
+export default class Cards extends Component {
   constructor(props) {
     super(props)
 
-    this.state = {
-      distance: null,
-  }
+    this.state = {}
 }
 
   state = { open: false }
@@ -21,13 +19,9 @@ export default class UserDash extends Component {
 
   render() {
     const { open, dimmer } = this.state
-    const distance = this.state.distance
 
     return (
       <div>
-
-        <div style={styles.mainPage}>
-          <Card.Group itemsPerRow={2}>
 
             <Card style={styles.card} onClick={this.show('blurring')}>
               <Card.Content style={styles.cardHeader} header='Search for Airports' />
@@ -38,43 +32,10 @@ export default class UserDash extends Component {
               </Card.Content>
             </Card>
 
-            <Card style={styles.card} onClick={this.show('blurring')}>
-              <Card.Content style={styles.cardHeader} header='Nearby Airports' />
-              <Card.Content style={styles.cardP} description="Find airports near you and their nonstop flights." />
-              <Card.Content extra>
-                <Icon name='user' />
-                4 Friends
-              </Card.Content>
-            </Card>
-
-        <Card style={styles.card} onClick={Airports}>
-          <Card.Content style={styles.cardHeader} header='Active Flights' />
-          <Card.Content style={styles.cardP} description="See thousands of current active flights." />
-          <Card.Content extra>
-            <Icon name='user' />
-            4 Friends
-          </Card.Content>
-        </Card>
-
-
-
-
-
-        <Card style={styles.card} onClick={this.show('blurring')}>
-          <Card.Content style={styles.cardHeader} header='Favorite Airports' />
-          <Card.Content style={styles.cardP} description="View your saved airports here." />
-          <Card.Content extra>
-            <Icon name='heart' />
-            My Favorites
-          </Card.Content>
-        </Card>
-      </Card.Group>
-        </div>
-
         <Modal dimmer={dimmer} open={open} onClose={this.close}>
           <Modal.Header style={styles.modalHeader}>Search All Airports</Modal.Header>
           <Modal.Content image>
-            <Nearby />
+            <Airports />
           </Modal.Content>
           <Modal.Actions>
             <Button style={styles.closeButton} color='teal' icon='checkmark' labelPosition='right' content="Close" onClick={this.close} />
@@ -110,12 +71,6 @@ const styles = {
   closeButton: {
     fontFamily: 'Work Sans, sans-serif',
     fontSize: '1.3em',
-  },
-  mainPage: {
-    paddingTop: '6em',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center'
   },
   card: {
     borderRadius: '8px'

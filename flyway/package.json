@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "animate-components": "^0.4.6",
     "axios": "^0.16.0",
     "d3": "^4.7.4",
     "iatacodes": "^7.0.1",

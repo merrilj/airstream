@@ -266,7 +266,7 @@ export default class Airports extends Component {
                 onChange={this.handleRadio}
               />
             </Form.Field>
-          </Form>
+        </Form>
         </div>
         <div id="map" style={styles.map}></div>
       </div>

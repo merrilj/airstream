@@ -6,6 +6,7 @@ import Airports from './components/Airports'
 import Welcome from './components/Welcome'
 import Userdash from './components/Userdash'
 import Nearby from './components/Nearby'
+import Cards from './components/Cards'
 
 export default class App extends Component {
   state = { activeItem: 'home' }
@@ -19,11 +20,6 @@ export default class App extends Component {
         <Menu size='huge' style={styles.navBar}>
           <Header style={styles.header} size='large'>flyway</Header>
 
-
-            <Button style={styles.signIn} color='teal' animated>
-              <Button.Content visible>Sign In</Button.Content>
-              <Button.Content hidden>or Sign Up</Button.Content>
-            </Button>
 
       </Menu>
       </div>
@@ -48,6 +44,7 @@ const styles = {
     fontFamily: 'Electrolize, sans-serif',
     fontSize: '2.5em',
     fontStyle: 'italic',
+    paddingBottom: '0.3em'
   },
 
   navBar: {
@@ -62,7 +59,7 @@ const styles = {
   },
 
   signIn: {
-    float: 'left'
+
   }
 
 }
