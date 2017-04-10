@@ -92,7 +92,7 @@ export default class Airports extends Component {
             response.forEach((data) => {
               let arrivalLat = data.lat
               let arrivalLng = data.lng
-              let popup = `<div class="leaflet-popup-content"><h3 class="leaflet-header">Flights from ${this.state.code.toUpperCase()} to ${data.code}</h3></div>`
+              let popup = `<p id="leaflet-header">Flights from ${this.state.code.toUpperCase()} to ${data.code}</p>`
               flights[data.code].forEach((flight) => {
                 popup += `<p id="flight-number">${flight.flight.airline_name} ${flight.flight.number}</p>`
                 if (flight.flight.aircraft_code !== undefined) {
@@ -156,7 +156,7 @@ export default class Airports extends Component {
             response.forEach((data) => {
               let departureLat = data.lat
               let departureLng = data.lng
-              let popup = `<div class="leaflet-popup-content"><h3 class="leaflet-header">Flights from ${data.code} to ${this.state.code.toUpperCase()}</h3></div>`
+              let popup = `<p id="leaflet-header">Flights from ${data.code} to ${this.state.code.toUpperCase()}</p>`
               flights[data.code].forEach((flight) => {
                 popup += `<p id="flight-number">${flight.flight.airline_name} ${flight.flight.number}</p>`
                 if (flight.flight.aircraft_code !== undefined) {
