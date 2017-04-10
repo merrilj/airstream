@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { Form, Radio, Input, Header, Image, Button, Modal, Grid, Segment } from 'semantic-ui-react'
 import L from 'leaflet'
-import IC from 'iatacodes'
+import IC from '../IC'
 import $ from 'jquery'
 import 'leaflet.polyline.snakeanim'
+
 const ic = new IC('772513cb-42b7-4262-b735-00d2f52eb796')
 
 export default class Airports extends Component {

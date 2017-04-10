@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Button, Modal } from 'semantic-ui-react'
 import L from 'leaflet'
-import IC from 'iatacodes'
+import IC from '../IC'
 
 const ic = new IC('772513cb-42b7-4262-b735-00d2f52eb796')
 

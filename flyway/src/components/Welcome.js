@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import Typist from 'react-typist'
 import { Header, Segment, Button, Divider, Grid, Modal } from 'semantic-ui-react'
 import { BounceDown, RollIn } from 'animate-components'
 
