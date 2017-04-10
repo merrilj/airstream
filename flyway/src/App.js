@@ -16,34 +16,21 @@ export default class App extends Component {
       <div>
 
         <div>
-        <Menu size='huge'>
+        <Menu size='huge' style={styles.navBar}>
           <Header style={styles.header} size='large'>flyway</Header>
 
-        <Menu.Menu position='right'>
-          <Menu.Item name='home' active={activeItem === 'home'} onClick={this.handleItemClick} />
-          <Menu.Item name='messages' active={activeItem === 'messages'} onClick={this.handleItemClick} />
 
-          <Dropdown item text='Language'>
-            <Dropdown.Menu>
-              <Dropdown.Item>English</Dropdown.Item>
-              <Dropdown.Item>Russian</Dropdown.Item>
-              <Dropdown.Item>Spanish</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-
-          <Menu.Item>
-            <Button color='teal' animated>
+            <Button style={styles.signIn} color='teal' animated>
               <Button.Content visible>Sign In</Button.Content>
               <Button.Content hidden>or Sign Up</Button.Content>
             </Button>
-          </Menu.Item>
-        </Menu.Menu>
+
       </Menu>
       </div>
 
       <div>
         <Container>
-          <Airports />
+          <Userdash />
         </Container>
       </div>
       </div>
@@ -51,15 +38,31 @@ export default class App extends Component {
   }
 }
 
+let imgUrl = 'http://wallpapercave.com/wp/AGAQ0Vy.jpg'
+
 const styles = {
   header: {
-    display: 'flex',
-    paddingTop: '0.5em',
+
+    paddingTop: '0.3em',
     paddingLeft: '0.5em',
+    fontFamily: 'Electrolize, sans-serif',
+    fontSize: '2.5em',
+    fontStyle: 'italic',
+  },
+
+  navBar: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 
   container: {
     padding: '2em',
     width: '95%',
+  },
+
+  signIn: {
+    float: 'left'
   }
+
 }

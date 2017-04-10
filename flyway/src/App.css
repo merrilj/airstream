@@ -1,3 +1,17 @@
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  padding: 0px;
+  background-color: #FFFFFF;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+  background-image: url("https://beewol.files.wordpress.com/2015/04/global.jpg");
+  opacity: 0.9;
+}
+
 .App {
   text-align: center;
 }
@@ -57,12 +71,6 @@
 	top:1px;
 }
 
-/*.popout {
-  width: 200px;
-  height: 20px;
-  overflow-y: scroll;
-}*/
-
 .leaflet-popup-content {
   color: gray;
   padding-right: 1em;
@@ -79,6 +87,9 @@
   margin-right: 0;
   margin-top: 0;
   text-align: center;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 1.8em;
+  font-weight: bold;
 }
 
 #flight-number {
@@ -86,11 +97,13 @@
   padding-top: 0;
   margin-bottom: 0;
   padding-bottom: 0;
-  font-size: 1.5em;
+  font-size: 1.6em;
+  font-weight: bolder;
 }
 
 p {
   font-family: arial;
+  font-family: 'Work Sans', sans-serif;
 }
 
 .airport-code {
@@ -100,21 +113,22 @@ p {
 #flight-times {
   margin-top: 0.3em;
   margin-bottom: 0;
-  font-size: 1.2em;
+  font-size: 1.4em;
 }
 
 #aircraft {
   margin-top: 0;
   margin-bottom: 0;
-  font-size: 1.3em;
+  font-size: 1.5em;
   font-style: italic;
 }
 
 #flight-status {
   margin-top: 0.3em;
   margin-bottom: 0.8em;
-  font-size: 1.2em;
+  font-size: 1.4em;
   color: green;
+  font-weight: bolder;
 }
 
 #flight-status-cancelled {
@@ -122,6 +136,7 @@ p {
   margin-bottom: 0.8em;
   font-size: 1.2em;
   color: red;
+  font-weight: bolder;
 }
 
 #flight-popup {
@@ -168,6 +183,11 @@ p {
   margin-top: 0.3em;
   margin-bottom: 0;
   font-size: 1.3em;
+}
+
+#modalTitle {
+  font-family: 'Work Sans', sans-serif;
+
 }
 
 @keyframes App-logo-spin {

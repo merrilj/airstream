@@ -6,7 +6,10 @@ export default class Flights extends Component {
   constructor(props) {
     super(props)
 
-    this.state = {plane: []}
+    this.state = {
+      plane: [],
+      clickZoom: null,
+    }
   }
 
   componentDidMount() {
@@ -15,17 +18,23 @@ export default class Flights extends Component {
 
 
   getFlights() {
-    var map = new L.Map("map", {center: [37.8, -96.9], zoom: 3})
+    var map = new L.Map("map", {center: [37.8, -96.9], zoom: 4})
     L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
    }).addTo(map);
+
+   function clickZoom(e) {
+     map.flyTo(e.target.getLatLng(), 6)
+   }
+
+   this.setState({clickZoom: clickZoom})
 
    var planeIcon = L.icon({
      iconUrl: 'https://cdn2.iconfinder.com/data/icons/app-types-in-grey/512/airplane_512pxGREY.png',
      shadowUrl: '',
 
      iconSize: [20, 20],
-    //  shadowSize: [10, 10],
+     shadowSize: [10, 10],
     //  iconAnchor: [20, 20],
     //  shadowAnchor: [22, 94],
     //  popupAnchor: [-3, -76]
@@ -53,7 +62,7 @@ export default class Flights extends Component {
             <p id="flight-arr">To ${arrival}</p></div>
             <p id="flight-alt">${alt} ft</p>
             <p id="flight-speed">${speed} mph</p>
-          `)
+          `).on('click', this.state.clickZoom)
         })
       })
   }
