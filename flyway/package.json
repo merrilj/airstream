@@ -1,5 +1,5 @@
 {
-  "name": "airstream",
+  "name": "flyway",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
