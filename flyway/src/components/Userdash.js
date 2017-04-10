@@ -3,6 +3,7 @@ import { Header, Image, Button, Modal, Input, Card, Icon } from 'semantic-ui-rea
 import Airports from './Airports'
 import Flights from './Flights'
 import Nearby from './Nearby'
+import Favorites from './Favorites'
 
 export default class UserDash extends Component {
   constructor(props) {
@@ -16,7 +17,8 @@ export default class UserDash extends Component {
   state = {
     openAirports: false,
     openNearby: false,
-    openFlights: false
+    openFlights: false,
+    openFavorites: false
   }
 
   showAirports = (dimmer) => () => this.setState({ dimmer, openAirports: true })
@@ -28,10 +30,11 @@ export default class UserDash extends Component {
   showFlights = (dimmer) => () => this.setState({ dimmer, openFlights: true })
   closeFlights = () => this.setState({ openFlights: false })
 
-
+  showFavorites = (dimmer) => () => this.setState({ dimmer, openFavorites: true })
+  closeFavorites = () => this.setState({ openFavorites: false })
 
   render() {
-    const { openAirports, openNearby, openFlights, dimmer } = this.state
+    const { openAirports, openNearby, openFlights, openFavorites, dimmer } = this.state
     const distance = this.state.distance
 
     return (
@@ -58,15 +61,24 @@ export default class UserDash extends Component {
               </Card.Content>
             </Card>
 
-        <Card style={styles.card} onClick={this.showFlights('blurring')}>
-          <Card.Content style={styles.cardHeader} header='Active Flights' />
-          <Card.Content style={styles.cardP} description="See thousands of current active flights." />
-          <Card.Content extra>
-            <Icon name='user' />
-            4 Friends
-          </Card.Content>
-        </Card>
-        </Card.Group>
+            <Card style={styles.card} onClick={this.showFlights('blurring')}>
+              <Card.Content style={styles.cardHeader} header='Active Flights' />
+              <Card.Content style={styles.cardP} description="See thousands of current active flights." />
+              <Card.Content extra>
+                <Icon name='user' />
+                4 Friends
+              </Card.Content>
+            </Card>
+
+            <Card style={styles.card} onClick={this.showFavorites('blurring')}>
+              <Card.Content style={styles.cardHeader} header='See Favorite Airports' />
+              <Card.Content style={styles.cardP} description="Search for airports around the world and see their direct flights." />
+              <Card.Content extra>
+                <Icon name='user' />
+                4 Friends
+              </Card.Content>
+            </Card>
+          </Card.Group>
         </div>
 
         <Modal dimmer={dimmer} open={openAirports} onClose={this.closeAirports}>
@@ -80,7 +92,7 @@ export default class UserDash extends Component {
         </Modal>
 
         <Modal dimmer={dimmer} open={openNearby} onClose={this.closeNearby}>
-          <Modal.Header style={styles.modalHeader}>Search All Airports</Modal.Header>
+          <Modal.Header style={styles.modalHeader}>See Nearby Airports</Modal.Header>
           <Modal.Content image>
             <Nearby />
           </Modal.Content>
@@ -90,12 +102,22 @@ export default class UserDash extends Component {
         </Modal>
 
         <Modal dimmer={dimmer} open={openFlights} onClose={this.closeFlights}>
-          <Modal.Header style={styles.modalHeader}>Search All Airports</Modal.Header>
+          <Modal.Header style={styles.modalHeader}>See Real-Time Flights</Modal.Header>
           <Modal.Content image>
             <Flights />
           </Modal.Content>
           <Modal.Actions>
             <Button style={styles.closeButton} color='teal' icon='checkmark' labelPosition='right' content="Close" onClick={this.closeFlights} />
+          </Modal.Actions>
+        </Modal>
+
+        <Modal dimmer={dimmer} open={openFavorites} onClose={this.closeFavorites}>
+          <Modal.Header style={styles.modalHeader}>My Favorite Airports</Modal.Header>
+          <Modal.Content image>
+
+          </Modal.Content>
+          <Modal.Actions>
+            <Button style={styles.closeButton} color='teal' icon='checkmark' labelPosition='right' content="Close" onClick={this.closeFavorites} />
           </Modal.Actions>
         </Modal>
       </div>
