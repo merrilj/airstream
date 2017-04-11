@@ -241,7 +241,7 @@ export default class Airports extends Component {
     return (
       <div style={styles.div}>
         <div style={styles.inputBoxDiv}>
-          <Input style={styles.inputBox} size='large' value={code} onChange={this.handleChange} type="text" icon='search' placeholder='Search for airport...' />
+          <Input style={styles.inputBox} size='large' value={code} onChange={this.handleChange} type="text" icon='search' placeholder='Search by airport code...' />
 
           <Form>
             <Form.Field style={styles.formFields}>

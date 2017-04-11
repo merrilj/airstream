@@ -12,26 +12,6 @@ body {
   opacity: 0.96;
 }
 
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
-}
-
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
-}
-
-.App-intro {
-  font-size: large;
-}
-
 .header {
   padding: 1em;
 }
@@ -181,30 +161,36 @@ p {
   font-size: 1.3em;
 }
 
-/*#modalTitle {
-  font-family: 'Work Sans', sans-serif;
-}*/
+
 
 #airport-title {
   font-family: 'Work Sans', sans-serif;
-  font-size: 1.4em;
+  font-size: 1.5em;
   margin-top: 0;
   margin-bottom: 0;
   font-weight: bold;
 }
 
+#airport-code {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
 #airport-distance {
   font-family: 'Work Sans', sans-serif;
-  font-size: 1.2em;
+  font-size: 1.3em;
   margin-top: 0;
   font-style: italic;
+  margin-bottom: 0;
 
 }
 
 .favorites-btn {
   border-radius: 5px;
-  font-size: 20px;
-  padding: 10px 10px;
+  font-size: 15px;
+  padding: 8px 10px;
   cursor: pointer;
   color: #ffffff;
   background-color: #00A6FF;
@@ -223,8 +209,6 @@ p {
   border: 1px solid #006398;
   box-shadow: 2px 2px 20px #AFE9FF;
 }
-
-@mobileBreakpoint: 320px;
 
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }

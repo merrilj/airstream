@@ -40,7 +40,7 @@ export default class UserDash extends Component {
     const distance = this.state.distance
 
     return (
-      <div>
+      <div style={styles.outerDiv}>
 
         <div style={styles.mainPage}>
         <BounceDown>
@@ -117,7 +117,7 @@ export default class UserDash extends Component {
         <Modal dimmer={dimmer} open={openFavorites} onClose={this.closeFavorites}>
           <Modal.Header style={styles.modalHeader}>Favorite Destinations</Modal.Header>
           <Modal.Content image>
-
+            <Favorites />
           </Modal.Content>
           <Modal.Actions>
             <Button style={styles.closeButton} color='teal' icon='remove' labelPosition='right' content="Close" onClick={this.closeFavorites} />
@@ -156,10 +156,17 @@ const styles = {
   },
   mainPage: {
     paddingTop: '6em',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
+    // display: 'flex',
+    // flexDirection: 'row',
+    // justifyContent: 'center',
+    alignItems: 'center'
 
+  },
+  outerDiv: {
+    width: '70%',
+    display: 'flex',
+    justifyContent: 'center',
+    margin: '0 auto'
   },
   card: {
     borderRadius: '8px'

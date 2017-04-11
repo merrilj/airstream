@@ -35,7 +35,7 @@ export default class Nearby extends Component {
     navigator.geolocation.getCurrentPosition((position) => {
       var lat = position.coords.latitude
       var lng = position.coords.longitude
-      console.log(this.state.airportIcon)
+
     ic.api('nearby', {lat: lat, lng: lng, distance: miToKm}, (error, response) => {
       response.forEach((data) => {
         if (data.type === 'airport' && data.icao.length > 1) {
@@ -61,6 +61,7 @@ export default class Nearby extends Component {
           nearbyMarker.bindPopup(`
             <p id="airport-title">${name}</p>
             <p id="airport-distance">${myDistance} miles away</p>
+            <p id="airport-code">Search by ${code} airport code</p>
             <br><button class="favorites-btn"><a href target="_blank">Add to Favorites</a></button>
           `)
         }
@@ -116,7 +117,6 @@ export default class Nearby extends Component {
         <div style={styles.distanceInput}>
           <Input icon='location arrow' value={maxDist} onChange={this.handleChange} placeholder='Max distance...' />
           <span style={styles.distanceSpan}>miles</span>
-          <Button style={styles.allFlights} icon='plane' labelPosition='right' content="All Flights"></Button>
         </div>
         <div id="map" style={styles.map}></div>
       </div>
