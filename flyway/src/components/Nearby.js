@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Modal } from 'semantic-ui-react'
+import { Button, Input } from 'semantic-ui-react'
 import L from 'leaflet'
 import IC from '../IC'
 
@@ -9,25 +9,91 @@ export default class Nearby extends Component {
   constructor(props) {
     super(props)
 
-    this.nearby = this.nearby.bind(this)
+    this.handleChange = this.handleChange.bind(this)
 
-    this.state = {}
+    this.state = {
+      distance: '',
+      map: null,
+      airportIcon: null,
+      arrivalIcon: null,
+      meIcon: null,
+      meMarker: null,
+      nearbyMarkers: []
+    }
   }
 
   componentDidMount() {
-    this.nearby()
+    this.newMap()
   }
 
-  nearby() {
+  handleChange(e) {
+    let dist = e.target.value
+    this.setState({distance: dist})
+    if (dist.length > 1) {
+      let distToNum = parseInt(dist)
+      let miToKm = distToNum * 1.60934
+    navigator.geolocation.getCurrentPosition((position) => {
+      var lat = position.coords.latitude
+      var lng = position.coords.longitude
+      console.log(this.state.airportIcon)
+    ic.api('nearby', {lat: lat, lng: lng, distance: miToKm}, (error, response) => {
+      response.forEach((data) => {
+        if (data.type === 'airport' && data.icao.length > 1) {
+          let latitude = data.lat
+          let longitude = data.lng
+          let code = data.code
+          let name = data.name
+          let myDistance = Math.ceil(data.distance * 0.000621371)
 
+          if (!name.includes('Airport')) {
+            name = (name + ' Airport').toUpperCase()
+          }
+
+          let meMarker = L.marker([lat, lng], {icon: this.state.meIcon}).addTo(this.state.map)
+          this.state.map.flyTo([lat, lng], 8)
+          this.setState({meMarker: meMarker})
+
+          let nearbyMarker = L.marker([latitude, longitude], {icon: this.state.airportIcon}).addTo(this.state.map)
+
+          let nearbyMarkers = this.state.nearbyMarkers.concat(nearbyMarker)
+          this.setState({nearbyMarkers: nearbyMarkers})
+
+          nearbyMarker.bindPopup(`
+            <p id="airport-title">${name}</p>
+            <p id="airport-title">${myDistance} miles away</p>
+            <br><button id="website-btn"><a href target="_blank">Visit Our Website</a></button>
+          `)
+        }
+      })
+      })
+    })
+  } else if (dist.length < 1) {
+    this.state.map.flyTo([37.8, -96.9], 2)
+    for (var i = 0; i < this.state.nearbyMarkers.length; i++) {
+      this.state.map.removeLayer(this.state.nearbyMarkers[i])
+    }
+  }
+
+
+  }
+
+  newMap() {
     var newMap = new L.Map("map", {center: [37.8, -96.9], zoom: 2})
     L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(newMap);
 
+    this.setState({map: newMap}, () => {
+      console.log('map')
+    })
+
     var airportIcon = L.icon({
       iconUrl: 'https://cdn3.iconfinder.com/data/icons/map/500/airport-512.png',
       iconSize: [30, 35],
+    })
+
+    this.setState({airportIcon: airportIcon}, () => {
+      console.log('airport')
     })
 
     var arrivalIcon = L.icon({
@@ -35,118 +101,32 @@ export default class Nearby extends Component {
       iconSize: [15, 15],
     })
 
+    this.setState({arrivalIcon: arrivalIcon}, () => {
+      console.log('arrival')
+    })
+
     var meIcon = L.icon({
       iconUrl: 'http://www.clipartkid.com/images/250/my-favorite-cliparts-ScFfFE-clipart.png',
       iconSize: [30, 35],
     })
 
-    navigator.geolocation.getCurrentPosition((position) => {
-      var lat = position.coords.latitude
-      var lng = position.coords.longitude
-      // console.log(lat, lng)
-    ic.api('nearby', {lat: lat, lng: lng, distance: 150}, function(error, response) {
-      response.forEach((data) => {
-        if (data.type === 'airport' && data.icao.length > 1) {
-          let latitude = data.lat
-          let longitude = data.lng
-          let code = data.code
-          // console.log(latitude, longitude)
-          // this.setState({lat: latitudes})
-          // this.setState({lng: longitudes})
-          let name = data.name
-          if (!name.includes('Airport')) {
-            name = (name + ' Airport').toUpperCase()
-          }
-
-          let meMarker = L.marker([lat, lng], {icon: meIcon}).addTo(newMap)
-          newMap.flyTo([lat, lng], 8)
-
-          let nearbyMarker = L.marker([latitude, longitude], {icon: airportIcon}).addTo(newMap)
-
-          nearbyMarker.bindPopup(`
-            <b>${name}</b>
-            <button id="popup-btn" onClick="">See Flights</button>
-          `)
-        }
-      })
-      })
+    this.setState({meIcon: meIcon}, () => {
+      console.log('me')
     })
+
   }
 
 
-
-
-
-  // ic.api('timetable', {code: code, type: 'departure'}, (error, response) => {
-  //   let flights = {}
-  //   response.forEach((data) => {
-  //     if (!flights[data.arrival_code]) {
-  //       flights[data.arrival_code] = []
-  //     }
-  //     flights[data.arrival_code].push(data)
-  //   })
-  //
-  //   let arrivalCode = []
-  //   for (var key in flights) {
-  //     arrivalCode.push(key)
-  //   }
-  //
-  //     ic.api('airports', {code: arrivalCode}, (error, response) => {
-  //       response.forEach((data) => {
-  //         let arrivalLat = data.lat
-  //         let arrivalLng = data.lng
-  //         let popup = `<div class="leaflet-popup-content"><h3 class="leaflet-header">Flights from ${code.toUpperCase()} to ${data.code}</h3></div>`
-  //         flights[data.code].forEach((flight) => {
-  //           popup += `<p id="flight-number">${flight.flight.airline_name} ${flight.flight.number}</p>`
-  //           if (flight.flight.aircraft_code !== undefined) {
-  //             popup += `<p id="aircraft">${flight.flight.aircraft_code} Aircraft</p>`
-  //           }
-  //           if (flight.departure_time !== undefined) {
-  //             let departing = flight.departure_time.substring(0, 16).replace(/T/i, ' at ')
-  //             popup += `<p id="flight-times">Departing ${departing}</p>`
-  //           } else {
-  //             popup += `<p id="flight-times">Private Flight</p>`
-  //           }
-  //           if (flight.departure_time !== undefined) {
-  //             let arriving = flight.arrival_time.substring(0, 16).replace(/T/i, ' at ')
-  //             popup += `<p id="flight-times">Arriving ${arriving}</p>`
-  //           }
-  //           if (flight.status === 'cancelled') {
-  //             popup += `<p id="flight-status-cancelled"> ${flight.status.charAt(0).toUpperCase() + flight.status.slice(1)}</p><hr>`
-  //           }
-  //           if (flight.status === 'flight') {
-  //             popup += `<p id="flight-status"> In ${flight.status.charAt(0).toUpperCase() + flight.status.slice(1)}</p><hr>`
-  //           }
-  //           if (flight.status !== 'flight' && flight.status !== 'cancelled') {
-  //             popup += `<p id="flight-status"> ${flight.status.charAt(0).toUpperCase() + flight.status.slice(1)}</p><hr>`
-  //           }
-  //
-  //         })
-  //         let arrivalMarker = L.marker([arrivalLat, arrivalLng], {icon: arrivalIcon}).addTo(newMap)
-  //         arrivalMarker.bindPopup(popup)
-  //
-  //         let fuckPolyline = L.polyline([
-  //           [latitude, longitude],
-  //           [arrivalLat, arrivalLng]],
-  //           {
-  //             color: 'teal',
-  //             weight: 2,
-  //             opacity: 0.7,
-  //           })
-  //         fuckPolyline.addTo(this.state.map).snakeIn()
-  //       })
-  //     })
-  //
-  // })
-
-
-
-
-
   render() {
+    const maxDist = this.state.distance
     return (
-      <div id="map" style={styles.map}></div>
-
+      <div style={styles.mainDiv}>
+        <div style={styles.distanceInput}>
+          <Input icon='location arrow' value={maxDist} onChange={this.handleChange} placeholder='Enter distance...' />
+          <span style={styles.distanceSpan}>miles</span>
+        </div>
+        <div id="map" style={styles.map}></div>
+      </div>
     )
   }
 
@@ -156,5 +136,16 @@ const styles = {
   map: {
     height: '80vh',
     width: '100%',
+  },
+  mainDiv: {
+    width: '100%'
+  },
+  distanceInput: {
+    paddingBottom: '0.7em'
+  },
+  distanceSpan: {
+    paddingLeft: '0.4em',
+    fontFamily: 'Work Sans, sans-serif',
+    fontSize: '1.3em'
   }
 }

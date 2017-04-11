@@ -47,7 +47,7 @@ export default class UserDash extends Component {
           <Card.Group itemsPerRow={2}>
             <Card style={styles.card} onClick={this.showAirports('blurring')}>
               <Card.Content style={styles.cardHeader} header='Search for Airports' />
-              <Card.Content style={styles.cardP} description="Search for airports around the world and see their direct flights." />
+              <Card.Content style={styles.cardP} description="Search airports around the world and see direct flights." />
               <Card.Content extra>
                 <Icon name='user' />
                 4 Friends
@@ -56,7 +56,7 @@ export default class UserDash extends Component {
 
             <Card style={styles.card} onClick={this.showNearby('blurring')}>
               <Card.Content style={styles.cardHeader} header='Nearby Airports' />
-              <Card.Content style={styles.cardP} description="Find airports near you and their nonstop flights." />
+              <Card.Content style={styles.cardP} description="Discover airports near you and find their nonstop flights." />
               <Card.Content extra>
                 <Icon name='user' />
                 4 Friends
@@ -65,7 +65,7 @@ export default class UserDash extends Component {
 
             <Card style={styles.card} onClick={this.showFlights('blurring')}>
               <Card.Content style={styles.cardHeader} header='Active Flights' />
-              <Card.Content style={styles.cardP} description="See thousands of current active flights." />
+              <Card.Content style={styles.cardP} description="Track thousands of current active flights around the world in real time." />
               <Card.Content extra>
                 <Icon name='user' />
                 4 Friends
@@ -74,7 +74,7 @@ export default class UserDash extends Component {
 
             <Card style={styles.card} onClick={this.showFavorites('blurring')}>
               <Card.Content style={styles.cardHeader} header='See Favorite Airports' />
-              <Card.Content style={styles.cardP} description="Search for airports around the world and see their direct flights." />
+              <Card.Content style={styles.cardP} description="See your favorite destinations and their direct flights here." />
               <Card.Content extra>
                 <Icon name='user' />
                 4 Friends
@@ -142,6 +142,7 @@ const styles = {
   cardP: {
     fontFamily: 'Work Sans, sans-serif',
     fontSize: '1.5em',
+    textAlign: 'center'
 
   },
   modalHeader: {

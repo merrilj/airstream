@@ -49,12 +49,8 @@ export default class Airports extends Component {
         let lng = data.lng
         this.setState({lat: lat})
         this.setState({lng: lng})
-        let phone
-        if (data.phone.length !== undefined) {
-          phone = data.phone
-        }
         let website
-        if (data.website.length !== undefined) {
+        if (data.website !== "") {
           website = data.website
         }
         let name = data.name
@@ -66,10 +62,8 @@ export default class Airports extends Component {
         this.state.map.flyTo([lat, lng], 5)
 
         marker.bindPopup(`
-          <b>${name}</b>
-          <br>${phone}
-          <br><button id="popup-btn"><a href=${website} target="_blank">Visit Our Website</a></button>
-          <button id="popup-btn" onClick="this.seeRoutes()">See Flights</button>
+          <p id="airport-title">${name}</p>
+          <br><button id="website-btn"><a href=${website} target="_blank">Visit Our Website</a></button>
         `)
       }
 
@@ -172,7 +166,6 @@ export default class Airports extends Component {
                   let arriving = flight.arrival_time.substring(0, 16).replace(/T/i, ' at ')
                   popup += `<p id="flight-times">Arriving ${arriving}</p>`
                 }
-                if (flight.status !== 'unknown') {
                 if (flight.status === 'cancelled') {
                   popup += `<p id="flight-status-cancelled"> ${flight.status.charAt(0).toUpperCase() + flight.status.slice(1)}</p><hr>`
                 }
@@ -182,7 +175,6 @@ export default class Airports extends Component {
                 if (flight.status !== 'flight' && flight.status !== 'cancelled') {
                   popup += `<p id="flight-status"> ${flight.status.charAt(0).toUpperCase() + flight.status.slice(1)}</p><hr>`
                 }
-              }
               })
               let marker = L.marker([departureLat, departureLng], {icon: this.state.smallIcon}).addTo(this.state.map)
               marker.bindPopup(popup)
