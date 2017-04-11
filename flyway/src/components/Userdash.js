@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Header, Image, Button, Modal, Input, Card, Icon } from 'semantic-ui-react'
-import { BounceDown, RollIn, Swing, Hatch, Entrance, Pulse, Flash, LightOut, LightIn, Flip, FadeInLeftBig } from 'animate-components'
+import { BounceDown } from 'animate-components'
 
 import Airports from './Airports'
 import Flights from './Flights'
@@ -32,11 +32,11 @@ export default class UserDash extends Component {
   showFlights = (dimmer) => () => this.setState({ dimmer, openFlights: true })
   closeFlights = () => this.setState({ openFlights: false })
 
-  showFavorites = (dimmer) => () => this.setState({ dimmer, openFavorites: true })
+  showFavorites = (dimmer, size) => () => this.setState({ dimmer, size, openFavorites: true })
   closeFavorites = () => this.setState({ openFavorites: false })
 
   render() {
-    const { openAirports, openNearby, openFlights, openFavorites, dimmer } = this.state
+    const { openAirports, openNearby, openFlights, openFavorites, dimmer, size } = this.state
     const distance = this.state.distance
 
     return (
@@ -72,7 +72,7 @@ export default class UserDash extends Component {
               </Card.Content>
             </Card>
 
-            <Card style={styles.card} onClick={this.showFavorites('blurring')}>
+            <Card style={styles.card} onClick={this.showFavorites('blurring', 'small')}>
               <Card.Content style={styles.cardHeader} header='Favorite Places' />
               <Card.Content style={styles.cardP} description="My saved favorite destinations and their flight operations." />
               <Card.Content extra>
@@ -114,7 +114,7 @@ export default class UserDash extends Component {
           </Modal.Actions>
         </Modal>
 
-        <Modal dimmer={dimmer} open={openFavorites} onClose={this.closeFavorites}>
+        <Modal dimmer={dimmer} size={size} open={openFavorites} onClose={this.closeFavorites}>
           <Modal.Header style={styles.modalHeader}>Favorite Destinations</Modal.Header>
           <Modal.Content image>
             <Favorites />
@@ -156,9 +156,6 @@ const styles = {
   },
   mainPage: {
     paddingTop: '6em',
-    // display: 'flex',
-    // flexDirection: 'row',
-    // justifyContent: 'center',
     alignItems: 'center'
 
   },

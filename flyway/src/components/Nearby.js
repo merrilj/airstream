@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Button, Input } from 'semantic-ui-react'
 import L from 'leaflet'
 import IC from '../IC'
+import $ from 'jquery'
+import axios from 'axios'
 
 const ic = new IC('772513cb-42b7-4262-b735-00d2f52eb796')
 
@@ -18,7 +20,8 @@ export default class Nearby extends Component {
       arrivalIcon: null,
       meIcon: null,
       meMarker: null,
-      nearbyMarkers: []
+      nearbyMarkers: [],
+      alreadyAddedError: null,
     }
   }
 
@@ -58,12 +61,26 @@ export default class Nearby extends Component {
           let nearbyMarkers = this.state.nearbyMarkers.concat(nearbyMarker)
           this.setState({nearbyMarkers: nearbyMarkers})
 
-          nearbyMarker.bindPopup(`
+          let airportPopup = $(`<div>
             <p id="airport-title">${name}</p>
             <p id="airport-distance">${myDistance} miles away</p>
-            <p id="airport-code">Search by ${code} airport code</p>
-            <br><button class="favorites-btn"><a href target="_blank">Add to Favorites</a></button>
+            <p id="airport-code">Search by ${code} airport code</p></div>
           `)
+          let button = $(`<button class="favorites-btn">Add to Favorites</button>`).click(() => {
+            axios.post('http://localhost:4000/favorites', {
+              name: name,
+              code: code
+            })
+            .then((response) => {
+              console.log(response)
+            })
+            .catch((error) => {
+              console.log(error)
+              this.setState({alreadyAddedError: error})
+            })
+          })
+          airportPopup.append(button)
+          nearbyMarker.bindPopup(airportPopup[0])
         }
       })
       })

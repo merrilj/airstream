@@ -57,7 +57,9 @@ const styles = {
 
   signOut: {
     fontFamily: 'Work Sans, sans-serif',
-    fontSize: '1.3em'
+    fontSize: '1.3em',
+    fontWeight: 'bold',
+    color: 'gray'
   }
 
 }

@@ -4,6 +4,7 @@ import L from 'leaflet'
 import IC from '../IC'
 import $ from 'jquery'
 import 'leaflet.polyline.snakeanim'
+import axios from 'axios'
 
 const ic = new IC('772513cb-42b7-4262-b735-00d2f52eb796')
 
@@ -22,7 +23,8 @@ export default class Airports extends Component {
       popupOptions: null,
       lat: null,
       lng: null,
-      arrival: null
+      arrival: null,
+      alreadyAddedError: null,
     }
   }
 
@@ -61,10 +63,25 @@ export default class Airports extends Component {
         let marker = L.marker([lat, lng], {icon: this.state.icon}).addTo(this.state.map)
         this.state.map.flyTo([lat, lng], 5)
 
-        marker.bindPopup(`
-          <p id="airport-title">${name}</p>
-          <br><button class="favorites-btn"><a href=${website} target="_blank">Add to Favorites</a></button>
+        let airportPopup = $(`<div>
+          <p id="airport-title">${name}</p></div>
         `)
+
+        let button = $(`<button class="favorites-btn">Add to Favorites</button>`).click(() => {
+          axios.post('http://localhost:4000/favorites', {
+            name: name,
+            code: new_code.toUpperCase()
+          })
+          .then((response) => {
+            console.log(response)
+          })
+          .catch((error) => {
+            console.log(error)
+            this.setState({alreadyAddedError: error})
+          })
+        })
+        airportPopup.append(button)
+        marker.bindPopup(airportPopup[0])
       }
 
       if (this.state.value === 'departure') {
