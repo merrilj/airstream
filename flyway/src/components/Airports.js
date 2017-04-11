@@ -63,7 +63,7 @@ export default class Airports extends Component {
 
         marker.bindPopup(`
           <p id="airport-title">${name}</p>
-          <br><button id="website-btn"><a href=${website} target="_blank">Visit Our Website</a></button>
+          <br><button class="favorites-btn"><a href=${website} target="_blank">Add to Favorites</a></button>
         `)
       }
 
@@ -179,6 +179,7 @@ export default class Airports extends Component {
               let marker = L.marker([departureLat, departureLng], {icon: this.state.smallIcon}).addTo(this.state.map)
               marker.bindPopup(popup)
 
+
               let polyline = L.polyline([
                 [departureLat, departureLng],
                 [this.state.lat, this.state.lng]],
@@ -203,6 +204,7 @@ export default class Airports extends Component {
 
     if (new_code.length < 3) {
       this.state.map.flyTo([37.8, -96.9], 2)
+
     }
 
   }
@@ -276,7 +278,7 @@ const styles = {
   map: {
     height: '80vh',
     width: '100%',
-    marginTop: '0.8em'
+    marginTop: '0.8em',
   },
 
   inputBoxDiv: {

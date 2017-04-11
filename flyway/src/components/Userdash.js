@@ -46,38 +46,38 @@ export default class UserDash extends Component {
         <BounceDown>
           <Card.Group itemsPerRow={2}>
             <Card style={styles.card} onClick={this.showAirports('blurring')}>
-              <Card.Content style={styles.cardHeader} header='Search for Airports' />
-              <Card.Content style={styles.cardP} description="Search airports around the world and see direct flights." />
+              <Card.Content style={styles.cardHeader} header='Find Airports' />
+              <Card.Content style={styles.cardP} description="Search airports around the world and see their flight network." />
               <Card.Content extra>
-                <Icon name='user' />
-                4 Friends
+                <Icon name='world' />
+                Airports
               </Card.Content>
             </Card>
 
             <Card style={styles.card} onClick={this.showNearby('blurring')}>
               <Card.Content style={styles.cardHeader} header='Nearby Airports' />
-              <Card.Content style={styles.cardP} description="Discover airports near you and find their nonstop flights." />
+              <Card.Content style={styles.cardP} description="Discover airports near you and see the network between them." />
               <Card.Content extra>
-                <Icon name='user' />
-                4 Friends
+                <Icon name='compass' />
+                Nearby
               </Card.Content>
             </Card>
 
             <Card style={styles.card} onClick={this.showFlights('blurring')}>
               <Card.Content style={styles.cardHeader} header='Active Flights' />
-              <Card.Content style={styles.cardP} description="Track thousands of current active flights around the world in real time." />
+              <Card.Content style={styles.cardP} description="Track hundreds of current active flights around the world." />
               <Card.Content extra>
-                <Icon name='user' />
-                4 Friends
+                <Icon name='plane' />
+                Real-Time
               </Card.Content>
             </Card>
 
             <Card style={styles.card} onClick={this.showFavorites('blurring')}>
-              <Card.Content style={styles.cardHeader} header='See Favorite Airports' />
-              <Card.Content style={styles.cardP} description="See your favorite destinations and their direct flights here." />
+              <Card.Content style={styles.cardHeader} header='Favorite Places' />
+              <Card.Content style={styles.cardP} description="My saved favorite destinations and their flight operations." />
               <Card.Content extra>
-                <Icon name='user' />
-                4 Friends
+                <Icon name='heart' />
+                Favorites
               </Card.Content>
             </Card>
           </Card.Group>
@@ -85,42 +85,42 @@ export default class UserDash extends Component {
         </div>
 
         <Modal dimmer={dimmer} open={openAirports} onClose={this.closeAirports}>
-          <Modal.Header style={styles.modalHeader}>Search All Airports</Modal.Header>
+          <Modal.Header style={styles.modalHeader}>Search for Any Airport</Modal.Header>
           <Modal.Content image>
             <Airports />
           </Modal.Content>
           <Modal.Actions>
-            <Button style={styles.closeButton} color='teal' icon='checkmark' labelPosition='right' content="Close" onClick={this.closeAirports} />
+            <Button style={styles.closeButton} color='teal' icon='remove' labelPosition='right' content="Close" onClick={this.closeAirports} />
           </Modal.Actions>
         </Modal>
 
         <Modal dimmer={dimmer} open={openNearby} onClose={this.closeNearby}>
-          <Modal.Header style={styles.modalHeader}>See Nearby Airports</Modal.Header>
+          <Modal.Header style={styles.modalHeader}>All Nearby Airports</Modal.Header>
           <Modal.Content image>
             <Nearby />
           </Modal.Content>
           <Modal.Actions>
-            <Button style={styles.closeButton} color='teal' icon='checkmark' labelPosition='right' content="Close" onClick={this.closeNearby} />
+            <Button style={styles.closeButton} color='teal' icon='remove' labelPosition='right' content="Close" onClick={this.closeNearby} />
           </Modal.Actions>
         </Modal>
 
         <Modal dimmer={dimmer} open={openFlights} onClose={this.closeFlights}>
-          <Modal.Header style={styles.modalHeader}>See Real-Time Flights</Modal.Header>
+          <Modal.Header style={styles.modalHeader}>Real-Time Flights</Modal.Header>
           <Modal.Content image>
             <Flights />
           </Modal.Content>
           <Modal.Actions>
-            <Button style={styles.closeButton} color='teal' icon='checkmark' labelPosition='right' content="Close" onClick={this.closeFlights} />
+            <Button style={styles.closeButton} color='teal' icon='remove' labelPosition='right' content="Close" onClick={this.closeFlights} />
           </Modal.Actions>
         </Modal>
 
         <Modal dimmer={dimmer} open={openFavorites} onClose={this.closeFavorites}>
-          <Modal.Header style={styles.modalHeader}>My Favorite Airports</Modal.Header>
+          <Modal.Header style={styles.modalHeader}>Favorite Destinations</Modal.Header>
           <Modal.Content image>
 
           </Modal.Content>
           <Modal.Actions>
-            <Button style={styles.closeButton} color='teal' icon='checkmark' labelPosition='right' content="Close" onClick={this.closeFavorites} />
+            <Button style={styles.closeButton} color='teal' icon='remove' labelPosition='right' content="Close" onClick={this.closeFavorites} />
           </Modal.Actions>
         </Modal>
       </div>
@@ -136,14 +136,14 @@ const styles = {
   cardHeader: {
     paddingTop: '0',
     paddingBottom: '0',
+    marginTop: '0',
+    marginBottom: '0',
     fontFamily: 'Work Sans, sans-serif',
-    color: 'gray'
   },
   cardP: {
     fontFamily: 'Work Sans, sans-serif',
     fontSize: '1.5em',
     textAlign: 'center'
-
   },
   modalHeader: {
     fontFamily: 'Work Sans, sans-serif',
@@ -159,8 +159,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    paddingLeft: '10em',
-    paddingRight: '10em'
+
   },
   card: {
     borderRadius: '8px'

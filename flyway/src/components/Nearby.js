@@ -60,15 +60,15 @@ export default class Nearby extends Component {
 
           nearbyMarker.bindPopup(`
             <p id="airport-title">${name}</p>
-            <p id="airport-title">${myDistance} miles away</p>
-            <br><button id="website-btn"><a href target="_blank">Visit Our Website</a></button>
+            <p id="airport-distance">${myDistance} miles away</p>
+            <br><button class="favorites-btn"><a href target="_blank">Add to Favorites</a></button>
           `)
         }
       })
       })
     })
   } else if (dist.length < 1) {
-    this.state.map.flyTo([37.8, -96.9], 2)
+    this.state.map.flyTo([37.8, -96.9], 4)
     for (var i = 0; i < this.state.nearbyMarkers.length; i++) {
       this.state.map.removeLayer(this.state.nearbyMarkers[i])
     }
@@ -78,41 +78,33 @@ export default class Nearby extends Component {
   }
 
   newMap() {
-    var newMap = new L.Map("map", {center: [37.8, -96.9], zoom: 2})
+    var newMap = new L.Map("map", {center: [37.8, -96.9], zoom: 4})
     L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(newMap);
 
-    this.setState({map: newMap}, () => {
-      console.log('map')
-    })
+    this.setState({map: newMap})
 
     var airportIcon = L.icon({
       iconUrl: 'https://cdn3.iconfinder.com/data/icons/map/500/airport-512.png',
       iconSize: [30, 35],
     })
 
-    this.setState({airportIcon: airportIcon}, () => {
-      console.log('airport')
-    })
+    this.setState({airportIcon: airportIcon})
 
     var arrivalIcon = L.icon({
       iconUrl: 'https://cdn3.iconfinder.com/data/icons/basicolor-transportation/24/264_airport_flight_arrival-512.png',
       iconSize: [15, 15],
     })
 
-    this.setState({arrivalIcon: arrivalIcon}, () => {
-      console.log('arrival')
-    })
+    this.setState({arrivalIcon: arrivalIcon})
 
     var meIcon = L.icon({
       iconUrl: 'http://www.clipartkid.com/images/250/my-favorite-cliparts-ScFfFE-clipart.png',
       iconSize: [30, 35],
     })
 
-    this.setState({meIcon: meIcon}, () => {
-      console.log('me')
-    })
+    this.setState({meIcon: meIcon})
 
   }
 
@@ -122,8 +114,9 @@ export default class Nearby extends Component {
     return (
       <div style={styles.mainDiv}>
         <div style={styles.distanceInput}>
-          <Input icon='location arrow' value={maxDist} onChange={this.handleChange} placeholder='Enter distance...' />
+          <Input icon='location arrow' value={maxDist} onChange={this.handleChange} placeholder='Max distance...' />
           <span style={styles.distanceSpan}>miles</span>
+          <Button style={styles.allFlights} icon='plane' labelPosition='right' content="All Flights"></Button>
         </div>
         <div id="map" style={styles.map}></div>
       </div>
@@ -147,5 +140,8 @@ const styles = {
     paddingLeft: '0.4em',
     fontFamily: 'Work Sans, sans-serif',
     fontSize: '1.3em'
+  },
+  allFlights: {
+    float: 'right'
   }
 }

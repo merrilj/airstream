@@ -181,24 +181,50 @@ p {
   font-size: 1.3em;
 }
 
-#modalTitle {
+/*#modalTitle {
   font-family: 'Work Sans', sans-serif;
-
-}
+}*/
 
 #airport-title {
   font-family: 'Work Sans', sans-serif;
-  font-size: 1.3em;
+  font-size: 1.4em;
+  margin-top: 0;
+  margin-bottom: 0;
+  font-weight: bold;
 }
 
-#airport-phone {
+#airport-distance {
   font-family: 'Work Sans', sans-serif;
   font-size: 1.2em;
+  margin-top: 0;
+  font-style: italic;
+
 }
 
-#website-btn {
-
+.favorites-btn {
+  border-radius: 5px;
+  font-size: 20px;
+  padding: 10px 10px;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: #00A6FF;
+  font-size: 1.2rem;
+  font-family: 'Work Sans', sans-serif;
+  font-weight: bold;
+  border: 1px solid #fff;
+  box-shadow: 2px 2px 5px #AFE9FF;
+  transition-duration: 0.5s;
+  -webkit-transition-duration: 0.5s;
+  -moz-transition-duration: 0.5s;
 }
+
+#website-btn:hover {
+  color: #006398;
+  border: 1px solid #006398;
+  box-shadow: 2px 2px 20px #AFE9FF;
+}
+
+@mobileBreakpoint: 320px;
 
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
