@@ -86,7 +86,7 @@ export default class UserDash extends Component {
 
         <Modal dimmer={dimmer} open={openAirports} onClose={this.closeAirports}>
           <Modal.Header style={styles.modalHeader}>Search for Any Airport</Modal.Header>
-          <Modal.Content image>
+          <Modal.Content style={styles.airportsModal} image>
             <Airports />
           </Modal.Content>
           <Modal.Actions>
@@ -96,7 +96,7 @@ export default class UserDash extends Component {
 
         <Modal dimmer={dimmer} open={openNearby} onClose={this.closeNearby}>
           <Modal.Header style={styles.modalHeader}>All Nearby Airports</Modal.Header>
-          <Modal.Content image>
+          <Modal.Content style={styles.nearbyModal} image>
             <Nearby />
           </Modal.Content>
           <Modal.Actions>
@@ -105,7 +105,7 @@ export default class UserDash extends Component {
         </Modal>
 
         <Modal dimmer={dimmer} open={openFlights} onClose={this.closeFlights}>
-          <Modal.Header style={styles.modalHeader}>Real-Time Flights</Modal.Header>
+          <Modal.Header style={styles.modalHeader}>Real-Time Active Flights</Modal.Header>
           <Modal.Content image>
             <Flights />
           </Modal.Content>
@@ -116,7 +116,7 @@ export default class UserDash extends Component {
 
         <Modal dimmer={dimmer} size={size} open={openFavorites} onClose={this.closeFavorites}>
           <Modal.Header style={styles.modalHeader}>Favorite Destinations</Modal.Header>
-          <Modal.Content style={styles.imageContent} image>
+          <Modal.Content style={styles.favoritesModal} image>
             <Favorites />
           </Modal.Content>
           <Modal.Actions>
@@ -148,7 +148,7 @@ const styles = {
   modalHeader: {
     fontFamily: 'Work Sans, sans-serif',
     fontWeight: 'bold',
-    fontSize: '1.9em'
+    fontSize: '1.7em'
   },
   closeButton: {
     fontFamily: 'Work Sans, sans-serif',
@@ -168,9 +168,15 @@ const styles = {
   card: {
     borderRadius: '8px'
   },
-  imageContent: {
+  favoritesModal: {
     paddingTop: '0.5em',
     paddingBottom: '0.5em',
     justifyContent: 'center'
-  }
+  },
+  nearbyModal: {
+    paddingTop: '0.8em'
+  },
+  airportsModal: {
+    paddingTop: '0.8em'
+  },
 }
