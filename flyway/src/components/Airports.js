@@ -69,7 +69,7 @@ export default class Airports extends Component {
 
         let button = $(`<button class="favorites-btn">Add to Favorites</button>`).click(() => {
           $('.favorites-btn').text('Added to Favorites')
-          axios.post('http://localhost:4000/favorites', {
+          axios.post('https://mighty-hamlet-57380.herokuapp.com', {
             name: name,
             code: new_code.toUpperCase()
           })
@@ -149,7 +149,6 @@ export default class Airports extends Component {
       })
     } else {
 
-
       ic.api('timetable', {code: this.state.code, type: this.state.value}, (error, response) => {
         let flights = {}
         response.forEach((data) => {
@@ -211,20 +210,12 @@ export default class Airports extends Component {
           })
 
       })
-
-
-
     }
-
-      })
-
+    })
     }
-
     if (new_code.length < 3) {
       this.state.map.flyTo([37.8, -96.9], 2)
-
     }
-
   }
 
 
@@ -292,32 +283,25 @@ const styles = {
   div: {
     width: '100%'
   },
-
   map: {
     height: '80vh',
     width: '100%',
     marginTop: '0.8em',
   },
-
   inputBoxDiv: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-
   },
-
   radioLabel: {
     fontFamily: 'Work Sans, sans-serif',
     transform: 'scale(1.5)',
     paddingLeft: '3em',
     paddingRight: '2em',
     display: 'flex',
-
   },
-
   formFields: {
     display: 'flex',
     flexDirection: 'row',
-
   }
 }
