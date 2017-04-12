@@ -69,7 +69,7 @@ export default class Nearby extends Component {
           let button = $(`<button class="favorites-btn">Add to Favorites</button>`).click(() => {
             axios.post('http://localhost:4000/favorites', {
               name: name,
-              code: code
+              code: code.toUpperCase()
             })
             .then((response) => {
               console.log(response)

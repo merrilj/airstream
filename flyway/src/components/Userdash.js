@@ -116,11 +116,11 @@ export default class UserDash extends Component {
 
         <Modal dimmer={dimmer} size={size} open={openFavorites} onClose={this.closeFavorites}>
           <Modal.Header style={styles.modalHeader}>Favorite Destinations</Modal.Header>
-          <Modal.Content image>
+          <Modal.Content style={styles.imageContent} image>
             <Favorites />
           </Modal.Content>
           <Modal.Actions>
-            <Button style={styles.closeButton} color='teal' icon='remove' labelPosition='right' content="Close" onClick={this.closeFavorites} />
+            <Button style={styles.closeButton} icon='remove' labelPosition='right' content="Close" onClick={this.closeFavorites} />
           </Modal.Actions>
         </Modal>
       </div>
@@ -168,4 +168,9 @@ const styles = {
   card: {
     borderRadius: '8px'
   },
+  imageContent: {
+    paddingTop: '0.5em',
+    paddingBottom: '0.5em',
+    justifyContent: 'center'
+  }
 }
