@@ -27,13 +27,13 @@ export default class Favorites extends Component {
   close = () => this.setState({ open: false })
 
   queryFavorites() {
-    axios.get('http://localhost:4000/favorites').then((data) => {
+    axios.get('https://mighty-hamlet-57380.herokuapp.com').then((data) => {
       this.setState({favorites: data.data})
     })
   }
 
   removeFavorites(index) {
-    axios.delete('http://localhost:4000/favorites/' + this.state.favorites[index].code)
+    axios.delete('https://mighty-hamlet-57380.herokuapp.com/' + this.state.favorites[index].code)
     .then((response) => {
       this.queryFavorites()
     })
