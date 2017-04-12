@@ -173,7 +173,7 @@ export default class Favorites extends Component {
           <div id="map" style={styles.newMap}></div>
         </Modal.Content>
         <Modal.Actions>
-          <Button icon='cancel' color='teal' labelPosition='right' content="Close" onClick={this.close} />
+          <Button icon='cancel' color='teal' labelPosition='right' content="Close" style={styles.closeButton} onClick={this.close} />
         </Modal.Actions>
       </Modal>
     </div>
@@ -208,8 +208,12 @@ const styles = {
     alignItems: 'center'
   },
   newMap: {
-    height: '80vh',
+    height: '65vh',
     width: '100%',
     marginTop: '0.8em',
+  },
+  closeButton: {
+    fontFamily: 'Work Sans, sans-serif',
+    fontSize: '1.3em'
   }
 }

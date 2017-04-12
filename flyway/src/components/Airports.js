@@ -284,7 +284,7 @@ const styles = {
     width: '100%'
   },
   map: {
-    height: '80vh',
+    height: '65vh',
     width: '100%',
     marginTop: '0.8em',
   },
