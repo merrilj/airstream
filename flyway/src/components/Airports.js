@@ -4,6 +4,7 @@ import L from 'leaflet'
 import IC from '../IC'
 import $ from 'jquery'
 import 'leaflet.polyline.snakeanim'
+import axios from 'axios'
 
 const ic = new IC('772513cb-42b7-4262-b735-00d2f52eb796')
 
@@ -22,7 +23,8 @@ export default class Airports extends Component {
       popupOptions: null,
       lat: null,
       lng: null,
-      arrival: null
+      arrival: null,
+      alreadyAddedError: null,
     }
   }
 
@@ -49,12 +51,8 @@ export default class Airports extends Component {
         let lng = data.lng
         this.setState({lat: lat})
         this.setState({lng: lng})
-        let phone
-        if (data.phone.length !== undefined) {
-          phone = data.phone
-        }
         let website
-        if (data.website.length !== undefined) {
+        if (data.website !== "") {
           website = data.website
         }
         let name = data.name
@@ -65,12 +63,26 @@ export default class Airports extends Component {
         let marker = L.marker([lat, lng], {icon: this.state.icon}).addTo(this.state.map)
         this.state.map.flyTo([lat, lng], 5)
 
-        marker.bindPopup(`
-          <b>${name}</b>
-          <br>${phone}
-          <br><button id="popup-btn"><a href=${website} target="_blank">Visit Our Website</a></button>
-          <button id="popup-btn" onClick="this.seeRoutes()">See Flights</button>
+        let airportPopup = $(`<div>
+          <p id="airport-title">${name}</p></div>
         `)
+
+        let button = $(`<button class="favorites-btn">Add to Favorites</button>`).click(() => {
+          $('.favorites-btn').text('Added to Favorites')
+          axios.post('https://mighty-hamlet-57380.herokuapp.com/favorites', {
+            name: name,
+            code: new_code.toUpperCase()
+          })
+          .then((response) => {
+            console.log(response)
+          })
+          .catch((error) => {
+            console.log(error)
+            this.setState({alreadyAddedError: error})
+          })
+        })
+        airportPopup.append(button)
+        marker.bindPopup(airportPopup[0])
       }
 
       if (this.state.value === 'departure') {
@@ -92,7 +104,7 @@ export default class Airports extends Component {
             response.forEach((data) => {
               let arrivalLat = data.lat
               let arrivalLng = data.lng
-              let popup = `<div class="leaflet-popup-content"><h3 class="leaflet-header">Flights from ${this.state.code.toUpperCase()} to ${data.code}</h3></div>`
+              let popup = `<p id="leaflet-header">Flights from ${this.state.code.toUpperCase()} to ${data.code}</p>`
               flights[data.code].forEach((flight) => {
                 popup += `<p id="flight-number">${flight.flight.airline_name} ${flight.flight.number}</p>`
                 if (flight.flight.aircraft_code !== undefined) {
@@ -137,7 +149,6 @@ export default class Airports extends Component {
       })
     } else {
 
-
       ic.api('timetable', {code: this.state.code, type: this.state.value}, (error, response) => {
         let flights = {}
         response.forEach((data) => {
@@ -156,7 +167,7 @@ export default class Airports extends Component {
             response.forEach((data) => {
               let departureLat = data.lat
               let departureLng = data.lng
-              let popup = `<div class="leaflet-popup-content"><h3 class="leaflet-header">Flights from ${data.code} to ${this.state.code.toUpperCase()}</h3></div>`
+              let popup = `<p id="leaflet-header">Flights from ${data.code} to ${this.state.code.toUpperCase()}</p>`
               flights[data.code].forEach((flight) => {
                 popup += `<p id="flight-number">${flight.flight.airline_name} ${flight.flight.number}</p>`
                 if (flight.flight.aircraft_code !== undefined) {
@@ -181,10 +192,10 @@ export default class Airports extends Component {
                 if (flight.status !== 'flight' && flight.status !== 'cancelled') {
                   popup += `<p id="flight-status"> ${flight.status.charAt(0).toUpperCase() + flight.status.slice(1)}</p><hr>`
                 }
-
               })
               let marker = L.marker([departureLat, departureLng], {icon: this.state.smallIcon}).addTo(this.state.map)
               marker.bindPopup(popup)
+
 
               let polyline = L.polyline([
                 [departureLat, departureLng],
@@ -199,19 +210,12 @@ export default class Airports extends Component {
           })
 
       })
-
-
-
     }
-
-      })
-
+    })
     }
-
     if (new_code.length < 3) {
       this.state.map.flyTo([37.8, -96.9], 2)
     }
-
   }
 
 
@@ -246,7 +250,7 @@ export default class Airports extends Component {
     return (
       <div style={styles.div}>
         <div style={styles.inputBoxDiv}>
-          <Input style={styles.inputBox} size='large' value={code} onChange={this.handleChange} type="text" icon='search' placeholder='Search for airport...' />
+          <Input style={styles.inputBox} size='large' value={code} onChange={this.handleChange} type="text" icon='search' placeholder='Search by airport code...' />
 
           <Form>
             <Form.Field style={styles.formFields}>
@@ -279,32 +283,25 @@ const styles = {
   div: {
     width: '100%'
   },
-
   map: {
     height: '80vh',
     width: '100%',
-    marginTop: '0.8em'
+    marginTop: '0.8em',
   },
-
   inputBoxDiv: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-
   },
-
   radioLabel: {
     fontFamily: 'Work Sans, sans-serif',
     transform: 'scale(1.5)',
     paddingLeft: '3em',
     paddingRight: '2em',
     display: 'flex',
-
   },
-
   formFields: {
     display: 'flex',
     flexDirection: 'row',
-
   }
 }
