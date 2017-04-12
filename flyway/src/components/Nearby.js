@@ -67,6 +67,7 @@ export default class Nearby extends Component {
             <p id="airport-code">Search by ${code} airport code</p></div>
           `)
           let button = $(`<button class="favorites-btn">Add to Favorites</button>`).click(() => {
+            $('.favorites-btn').text('Added to Favorites')
             axios.post('https://mighty-hamlet-57380.herokuapp.com/favorites', {
               name: name,
               code: code.toUpperCase()
