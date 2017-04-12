@@ -17,13 +17,20 @@ export default class Favorites extends Component {
       map: null,
       icon: null,
       smallIcon: null,
+      currentAirport: {}
 
     }
   }
 
   state = { open: false }
 
-  show = (dimmer, size) => () => this.setState({ dimmer, size: 'large', open: true })
+  show = (airport, dimmer, size) => () => {
+    this.setState({ dimmer, size, open: true })
+    this.setState({currentAirport: airport})
+    setTimeout(() => {
+      this.newMap()
+    }, 0)
+  }
   close = () => this.setState({ open: false })
 
   queryFavorites() {
@@ -45,7 +52,7 @@ export default class Favorites extends Component {
 
   componentDidMount() {
     this.queryFavorites()
-    // this.newMap()
+    //this.newMap()
   }
 
   newMap() {
@@ -54,22 +61,86 @@ export default class Favorites extends Component {
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
    }).addTo(newMap);
 
-   this.setState({map: newMap})
+    var airportIcon = L.icon({
+      iconUrl: 'https://cdn3.iconfinder.com/data/icons/map/500/airport-512.png',
+      iconSize: [30, 35],
+    })
 
-   var airportIcon = L.icon({
-     iconUrl: 'https://cdn3.iconfinder.com/data/icons/map/500/airport-512.png',
-     iconSize: [30, 35],
-   })
+    var arrivalIcon = L.icon({
+      iconUrl: 'https://cdn3.iconfinder.com/data/icons/basicolor-transportation/24/264_airport_flight_arrival-512.png',
+      iconSize: [15, 15],
+    })
 
-   this.setState({icon: airportIcon})
+    let airportCode = this.state.currentAirport.code
+    ic.api('airports', {code: airportCode}, (error, response) => {
+      let data = response[0]
+      let lat = data.lat
+      let lng = data.lng
 
-   var arrivalIcon = L.icon({
-     iconUrl: 'https://cdn3.iconfinder.com/data/icons/basicolor-transportation/24/264_airport_flight_arrival-512.png',
-     iconSize: [15, 15],
-   })
+      let marker = L.marker([lat, lng], {icon: airportIcon}).addTo(newMap)
+      newMap.flyTo([lat, lng], 5)
 
-   this.setState({smallIcon: arrivalIcon})
+      ic.api('timetable', {code: airportCode, type: 'departure'}, (error, response) => {
+        let flights = {}
+        response.forEach((data) => {
+          if (!flights[data.arrival_code]) {
+            flights[data.arrival_code] = []
+          }
+          flights[data.arrival_code].push(data)
+        })
 
+        let arrivalCode = []
+        for (var key in flights) {
+          arrivalCode.push(key)
+        }
+
+        ic.api('airports', {code: arrivalCode}, (error, response) => {
+          response.forEach((data) => {
+            let arrivalLat = data.lat
+            let arrivalLng = data.lng
+            let popup = `<p id="leaflet-header">Flights from ${airportCode} to ${data.code}</p>`
+              flights[data.code].forEach((flight) => {
+                popup += `<p id="flight-number">${flight.flight.airline_name} ${flight.flight.number}</p>`
+                if (flight.flight.aircraft_code !== undefined) {
+                  popup += `<p id="aircraft">${flight.flight.aircraft_code} Aircraft</p>`
+                }
+                if (flight.departure_time !== undefined) {
+                  let departing = flight.departure_time.substring(0, 16).replace(/T/i, ' at ')
+                  popup += `<p id="flight-times">Departing ${departing}</p>`
+                } else {
+                  popup += `<p id="flight-times">Private Flight</p>`
+                }
+                if (flight.departure_time !== undefined) {
+                  let arriving = flight.arrival_time.substring(0, 16).replace(/T/i, ' at ')
+                  popup += `<p id="flight-times">Arriving ${arriving}</p>`
+                }
+                if (flight.status === 'cancelled') {
+                  popup += `<p id="flight-status-cancelled"> ${flight.status.charAt(0).toUpperCase() + flight.status.slice(1)}</p><hr>`
+                }
+                if (flight.status === 'flight') {
+                  popup += `<p id="flight-status"> In ${flight.status.charAt(0).toUpperCase() + flight.status.slice(1)}</p><hr>`
+                }
+                if (flight.status !== 'flight' && flight.status !== 'cancelled') {
+                  popup += `<p id="flight-status"> ${flight.status.charAt(0).toUpperCase() + flight.status.slice(1)}</p><hr>`
+                }
+
+              })
+              let arrivalMarker = L.marker([arrivalLat, arrivalLng], {icon: arrivalIcon}).addTo(newMap)
+              arrivalMarker.bindPopup(popup)
+
+              let polyline = L.polyline([
+                [lat, lng],
+                [arrivalLat, arrivalLng]],
+                {
+                  color: 'teal',
+                  weight: 2,
+                  opacity: 0.7,
+                })
+              polyline.addTo(newMap).snakeIn()
+            })
+          })
+        })
+      })
   }
 
 
@@ -81,8 +152,8 @@ export default class Favorites extends Component {
       <List style={styles.listColumn} divided verticalAlign='middle'>
         {this.state.favorites.map((airport, index) => (
           <List.Item style={styles.listItem} key={airport.id}>
-            <List.Content styles={styles.listButtons} floated='right'>
-              <Button icon='plane' inverted color='blue' onClick={this.show('blurring', 'large')}></Button>
+            <List.Content floated='right'>
+              <Button icon='plane' inverted color='blue' onClick={this.show(airport, 'blurring', 'large')}></Button>
               <Button icon='cancel' onClick={this.removeFavorites.bind(this, index)} inverted color='red'></Button>
             </List.Content>
             <Image avatar style={styles.image} src='http://www.johngedeon.com/Tower-icon.jpg' />
@@ -97,9 +168,9 @@ export default class Favorites extends Component {
 
 
       <Modal dimmer={dimmer} size={size} open={open} onClose={this.close}>
-        <Modal.Header>Flights from Such and Such</Modal.Header>
+        <Modal.Header>{this.state.currentAirport.name}</Modal.Header>
         <Modal.Content image>
-
+          <div id="map" style={styles.newMap}></div>
         </Modal.Content>
         <Modal.Actions>
           <Button icon='cancel' color='teal' labelPosition='right' content="Close" onClick={this.close} />
@@ -135,5 +206,10 @@ const styles = {
   listButtons: {
     position: 'absolute',
     alignItems: 'center'
+  },
+  newMap: {
+    height: '80vh',
+    width: '100%',
+    marginTop: '0.8em',
   }
 }
