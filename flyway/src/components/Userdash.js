@@ -115,7 +115,7 @@ export default class UserDash extends Component {
         </Modal>
 
         <Modal dimmer={dimmer} size={size} open={openFavorites} onClose={this.closeFavorites}>
-          <Modal.Header style={styles.modalHeader}>Favorite Destinations</Modal.Header>
+          <Modal.Header style={styles.modalHeader}>Favorite Airports</Modal.Header>
           <Modal.Content style={styles.favoritesModal} image>
             <Favorites />
           </Modal.Content>

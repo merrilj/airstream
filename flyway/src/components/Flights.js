@@ -31,13 +31,7 @@ export default class Flights extends Component {
 
    var planeIcon = L.icon({
      iconUrl: 'https://cdn2.iconfinder.com/data/icons/app-types-in-grey/512/airplane_512pxGREY.png',
-     shadowUrl: '',
-
      iconSize: [20, 20],
-     shadowSize: [10, 10],
-    //  iconAnchor: [20, 20],
-    //  shadowAnchor: [22, 94],
-    //  popupAnchor: [-3, -76]
    })
 
     return axios.get('https://iatacodes.org/api/v6/flights?api_key=772513cb-42b7-4262-b735-00d2f52eb796')
@@ -76,7 +70,7 @@ export default class Flights extends Component {
 
 const styles = {
   map: {
-    height: '80vh',
+    height: '70vh',
     width: '100%',
   }
 }

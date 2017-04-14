@@ -145,7 +145,7 @@ export default class Nearby extends Component {
 
 const styles = {
   map: {
-    height: '80vh',
+    height: '65vh',
     width: '100%',
   },
   mainDiv: {
