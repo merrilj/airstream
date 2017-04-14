@@ -15,9 +15,7 @@ export default class App extends Component {
         <div>
           <Menu size='huge' style={styles.navBar}>
             <Header style={styles.header} size='large'>flyway</Header>
-            <Menu.Menu position='right'>
-              <Menu.Item name='sign out' style={styles.signOut} active={activeItem === 'sign out'} onClick={this.handleItemClick} />
-            </Menu.Menu>
+            
           </Menu>
         </div>
         <div>
