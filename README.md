@@ -3,7 +3,7 @@
 ## Description
 Flyway is a full-stack app that visualizes all nonstop flights from any airport of your choice and provides an updated list of scheduled, current, or landed flights per destination airport.
 
-[See live](flyway.pro)
+[See live](www.flyway.pro)
 
 ## Instructions
 - npm install
