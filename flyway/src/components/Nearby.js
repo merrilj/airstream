@@ -32,68 +32,75 @@ export default class Nearby extends Component {
   handleChange(e) {
     let dist = e.target.value
     this.setState({distance: dist})
+
     if (dist.length > 1) {
       let distToNum = parseInt(dist)
       let miToKm = distToNum * 1.60934
-    navigator.geolocation.getCurrentPosition((position) => {
-      var lat = position.coords.latitude
-      var lng = position.coords.longitude
 
-    ic.api('nearby', {lat: lat, lng: lng, distance: miToKm}, (error, response) => {
-      response.forEach((data) => {
-        if (data.type === 'airport' && data.icao.length > 1) {
-          let latitude = data.lat
-          let longitude = data.lng
-          let code = data.code
-          let name = data.name
-          let myDistance = Math.ceil(data.distance * 0.000621371)
+      navigator.geolocation.getCurrentPosition((position) => {
+        let lat = position.coords.latitude
+        let lng = position.coords.longitude
 
-          if (!name.includes('Airport')) {
-            name = (name + ' Airport').toUpperCase()
-          }
+        // nearby airports api call
+        ic.api('nearby', {lat: lat, lng: lng, distance: miToKm}, (error, response) => {
+          response.forEach((data) => {
+            if (data.type === 'airport' && data.icao.length > 1) {
+              let latitude = data.lat
+              let longitude = data.lng
+              let code = data.code
+              let name = data.name
+              let myDistance = Math.ceil(data.distance * 0.000621371)
 
-          let meMarker = L.marker([lat, lng], {icon: this.state.meIcon}).addTo(this.state.map)
-          this.state.map.flyTo([lat, lng], 8)
-          this.setState({meMarker: meMarker})
+              if (!name.includes('Airport')) {
+                name = (name + ' Airport').toUpperCase()
+              }
 
-          let nearbyMarker = L.marker([latitude, longitude], {icon: this.state.airportIcon}).addTo(this.state.map)
+              let meMarker = L.marker([lat, lng], {icon: this.state.meIcon}).addTo(this.state.map)
+              this.state.map.flyTo([lat, lng], 8)
+              this.setState({meMarker: meMarker})
 
-          let nearbyMarkers = this.state.nearbyMarkers.concat(nearbyMarker)
-          this.setState({nearbyMarkers: nearbyMarkers})
+              let nearbyMarker = L.marker([latitude, longitude], {icon: this.state.airportIcon}).addTo(this.state.map)
 
-          let airportPopup = $(`<div>
-            <p id="airport-title">${name}</p>
-            <p id="airport-distance">${myDistance} miles away</p>
-            <p id="airport-code">Search by ${code} airport code</p></div>
-          `)
-          let button = $(`<button class="favorites-btn">Add to Favorites</button>`).click(() => {
-            $('.favorites-btn').text('Added to Favorites')
-            axios.post('https://mighty-hamlet-57380.herokuapp.com/favorites', {
-              name: name,
-              code: code.toUpperCase()
-            })
-            .then((response) => {
-              console.log(response)
-            })
-            .catch((error) => {
-              console.log(error)
-              this.setState({alreadyAddedError: error})
-            })
+              let nearbyMarkers = this.state.nearbyMarkers.concat(nearbyMarker)
+              this.setState({nearbyMarkers: nearbyMarkers})
+
+              let airportPopup = $(`
+                <div>
+                  <p id="airport-title">${name}</p>
+                  <p id="airport-distance">${myDistance} miles away</p>
+                  <p id="airport-code">Search by ${code} airport code</p></div>
+              `)
+
+              let button = $(`<button class="favorites-btn">Add to Favorites</button>`).click(() => {
+                $('.favorites-btn').text('Added to Favorites')
+                // external database post request
+                axios.post('https://mighty-hamlet-57380.herokuapp.com/favorites', {
+                  name: name,
+                  code: code.toUpperCase()
+                })
+                .then((response) => {
+                  console.log(response)
+                })
+                .catch((error) => {
+                  console.log(error)
+                  this.setState({alreadyAddedError: error})
+                })
+              })
+
+              airportPopup.append(button)
+              nearbyMarker.bindPopup(airportPopup[0])
+            }
           })
-          airportPopup.append(button)
-          nearbyMarker.bindPopup(airportPopup[0])
-        }
+        })
       })
-      })
-    })
-  } else if (dist.length < 1) {
-    this.state.map.flyTo([37.8, -96.9], 4)
-    for (var i = 0; i < this.state.nearbyMarkers.length; i++) {
-      this.state.map.removeLayer(this.state.nearbyMarkers[i])
+
+    } else if (dist.length < 1) {
+      this.state.map.flyTo([37.8, -96.9], 4)
+
+      for (var i = 0; i < this.state.nearbyMarkers.length; i++) {
+        this.state.map.removeLayer(this.state.nearbyMarkers[i])
+      }
     }
-  }
-
-
   }
 
   newMap() {
@@ -124,7 +131,6 @@ export default class Nearby extends Component {
     })
 
     this.setState({meIcon: meIcon})
-
   }
 
 
@@ -140,7 +146,6 @@ export default class Nearby extends Component {
       </div>
     )
   }
-
 }
 
 const styles = {

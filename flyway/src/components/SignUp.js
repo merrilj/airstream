@@ -36,6 +36,4 @@ export default class SignUp extends Component {
   }
 }
 
-const styles = {
-
-}
+const styles = {}
