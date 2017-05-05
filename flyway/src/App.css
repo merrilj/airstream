@@ -96,10 +96,6 @@ p {
   font-weight: bolder;
 }
 
-/*#flight-popup {
-  width: 115px;
-}*/
-
 #flight-num {
   margin-top: 0;
   margin-bottom: 0;
@@ -159,7 +155,6 @@ p {
   margin-top: 0;
   font-style: italic;
   margin-bottom: 0;
-
 }
 
 .favorites-btn {
@@ -181,11 +176,5 @@ p {
 
 .favorites-btn:hover {
   color: #006398;
-
   box-shadow: 2px 2px 20px #AFE9FF;
-}
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
 }

@@ -18,7 +18,6 @@ export default class Favorites extends Component {
       icon: null,
       smallIcon: null,
       currentAirport: {}
-
     }
   }
 
@@ -52,14 +51,13 @@ export default class Favorites extends Component {
 
   componentDidMount() {
     this.queryFavorites()
-    //this.newMap()
   }
 
   newMap() {
     var newMap = new L.Map("map", {center: [37.8, -96.9], zoom: 2})
     L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-   }).addTo(newMap);
+    }).addTo(newMap);
 
     var airportIcon = L.icon({
       iconUrl: 'https://cdn3.iconfinder.com/data/icons/map/500/airport-512.png',
@@ -72,6 +70,8 @@ export default class Favorites extends Component {
     })
 
     let airportCode = this.state.currentAirport.code
+
+    // favorite airport departures timetable api call
     ic.api('airports', {code: airportCode}, (error, response) => {
       let data = response[0]
       let lat = data.lat
@@ -82,6 +82,7 @@ export default class Favorites extends Component {
 
       ic.api('timetable', {code: airportCode, type: 'departure'}, (error, response) => {
         let flights = {}
+
         response.forEach((data) => {
           if (!flights[data.arrival_code]) {
             flights[data.arrival_code] = []
@@ -94,53 +95,63 @@ export default class Favorites extends Component {
           arrivalCode.push(key)
         }
 
+        // arrival airports location api call
         ic.api('airports', {code: arrivalCode}, (error, response) => {
           response.forEach((data) => {
             let arrivalLat = data.lat
             let arrivalLng = data.lng
+
             let popup = `<p id="leaflet-header">Flights from ${airportCode} to ${data.code}</p>`
-              flights[data.code].forEach((flight) => {
-                popup += `<p id="flight-number">${flight.flight.airline_name} ${flight.flight.number}</p>`
-                if (flight.flight.aircraft_code !== undefined) {
-                  popup += `<p id="aircraft">${flight.flight.aircraft_code} Aircraft</p>`
-                }
-                if (flight.departure_time !== undefined) {
-                  let departing = flight.departure_time.substring(0, 16).replace(/T/i, ' at ')
-                  popup += `<p id="flight-times">Departing ${departing}</p>`
-                } else {
-                  popup += `<p id="flight-times">Private Flight</p>`
-                }
-                if (flight.departure_time !== undefined) {
-                  let arriving = flight.arrival_time.substring(0, 16).replace(/T/i, ' at ')
-                  popup += `<p id="flight-times">Arriving ${arriving}</p>`
-                }
-                if (flight.status === 'cancelled') {
-                  popup += `<p id="flight-status-cancelled"> ${flight.status.charAt(0).toUpperCase() + flight.status.slice(1)}</p><hr>`
-                }
-                if (flight.status === 'flight') {
-                  popup += `<p id="flight-status"> In ${flight.status.charAt(0).toUpperCase() + flight.status.slice(1)}</p><hr>`
-                }
-                if (flight.status !== 'flight' && flight.status !== 'cancelled') {
-                  popup += `<p id="flight-status"> ${flight.status.charAt(0).toUpperCase() + flight.status.slice(1)}</p><hr>`
-                }
 
-              })
-              let arrivalMarker = L.marker([arrivalLat, arrivalLng], {icon: arrivalIcon}).addTo(newMap)
-              arrivalMarker.bindPopup(popup)
+            flights[data.code].forEach((flight) => {
+              popup += `<p id="flight-number">${flight.flight.airline_name} ${flight.flight.number}</p>`
 
-              let polyline = L.polyline([
-                [lat, lng],
-                [arrivalLat, arrivalLng]],
-                {
-                  color: 'teal',
-                  weight: 2,
-                  opacity: 0.7,
-                })
-              polyline.addTo(newMap).snakeIn()
+              if (flight.flight.aircraft_code !== undefined) {
+                popup += `<p id="aircraft">${flight.flight.aircraft_code} Aircraft</p>`
+              }
+
+              if (flight.departure_time !== undefined) {
+                let departing = flight.departure_time.substring(0, 16).replace(/T/i, ' at ')
+                popup += `<p id="flight-times">Departing ${departing}</p>`
+              } else {
+                popup += `<p id="flight-times">Private Flight</p>`
+              }
+
+              if (flight.departure_time !== undefined) {
+                let arriving = flight.arrival_time.substring(0, 16).replace(/T/i, ' at ')
+                popup += `<p id="flight-times">Arriving ${arriving}</p>`
+              }
+
+              if (flight.status === 'cancelled') {
+                popup += `<p id="flight-status-cancelled"> ${flight.status.charAt(0).toUpperCase() + flight.status.slice(1)}</p><hr>`
+              }
+
+              if (flight.status === 'flight') {
+                popup += `<p id="flight-status"> In ${flight.status.charAt(0).toUpperCase() + flight.status.slice(1)}</p><hr>`
+              }
+
+              if (flight.status !== 'flight' && flight.status !== 'cancelled') {
+                popup += `<p id="flight-status"> ${flight.status.charAt(0).toUpperCase() + flight.status.slice(1)}</p><hr>`
+              }
             })
+
+            let arrivalMarker = L.marker([arrivalLat, arrivalLng], {icon: arrivalIcon}).addTo(newMap)
+            arrivalMarker.bindPopup(popup)
+
+            let polyline = L.polyline([
+              [lat, lng],
+              [arrivalLat, arrivalLng]],
+              {
+                color: 'teal',
+                weight: 2,
+                opacity: 0.7,
+              }
+            )
+            polyline.addTo(newMap).snakeIn()
           })
         })
       })
+    })
   }
 
 
@@ -149,34 +160,33 @@ export default class Favorites extends Component {
 
     return (
       <div>
-      <List style={styles.listColumn} divided verticalAlign='middle'>
-        {this.state.favorites.map((airport, index) => (
-          <List.Item style={styles.listItem} key={airport.id}>
-            <List.Content floated='right'>
-              <Button icon='plane' inverted color='blue' onClick={this.show(airport, 'blurring', 'large')}></Button>
-              <Button icon='cancel' onClick={this.removeFavorites.bind(this, index)} inverted color='red'></Button>
-            </List.Content>
-            <Image avatar style={styles.image} src='http://www.johngedeon.com/Tower-icon.jpg' />
-            <List.Content style={styles.listContent}>
+        <List style={styles.listColumn} divided verticalAlign='middle'>
+          {this.state.favorites.map((airport, index) => (
+            <List.Item key={airport.id}>
+              <List.Content floated='right'>
+                <Button icon='plane' inverted color='blue' onClick={this.show(airport, 'blurring', 'large')}></Button>
+                <Button icon='cancel' onClick={this.removeFavorites.bind(this, index)} inverted color='red'></Button>
+              </List.Content>
+
+              <Image avatar style={styles.image} src='http://www.johngedeon.com/Tower-icon.jpg' />
+              <List.Content style={styles.listContent}>
               <List.Header style={styles.listHeader}>{airport.name}</List.Header>
-              Search by {airport.code}
-            </List.Content>
-          </List.Item>
-        ))}
-      </List>
+                Search by {airport.code}
+              </List.Content>
+            </List.Item>
+          ))}
+        </List>
 
-
-
-      <Modal dimmer={dimmer} size={size} open={open} onClose={this.close}>
-        <Modal.Header>{this.state.currentAirport.name}</Modal.Header>
-        <Modal.Content image>
-          <div id="map" style={styles.newMap}></div>
-        </Modal.Content>
-        <Modal.Actions>
-          <Button icon='cancel' color='teal' labelPosition='right' content="Close" style={styles.closeButton} onClick={this.close} />
-        </Modal.Actions>
-      </Modal>
-    </div>
+        <Modal dimmer={dimmer} size={size} open={open} onClose={this.close}>
+          <Modal.Header>{this.state.currentAirport.name}</Modal.Header>
+          <Modal.Content image>
+            <div id="map" style={styles.newMap}></div>
+          </Modal.Content>
+          <Modal.Actions>
+            <Button icon='cancel' color='teal' labelPosition='right' content="Close" style={styles.closeButton} onClick={this.close} />
+          </Modal.Actions>
+        </Modal>
+      </div>
     )
   }
 }
@@ -185,7 +195,6 @@ const styles = {
   listColumn: {
     margin: '0 auto',
     alignItems: 'center',
-
   },
   image: {
     width: '4em',
@@ -200,8 +209,6 @@ const styles = {
   listContent: {
     fontFamily: 'Work Sans, sans-serif',
     fontSize: '1.2em',
-  },
-  listItem: {
   },
   listButtons: {
     position: 'absolute',

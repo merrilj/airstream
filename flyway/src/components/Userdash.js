@@ -41,46 +41,45 @@ export default class UserDash extends Component {
 
     return (
       <div style={styles.outerDiv}>
-
         <div style={styles.mainPage}>
-        <BounceDown>
-          <Card.Group itemsPerRow={2}>
-            <Card style={styles.card} onClick={this.showAirports('blurring')}>
-              <Card.Content style={styles.cardHeader} header='Find Airports' />
-              <Card.Content style={styles.cardP} description="Search airports around the world and see their flight network." />
-              <Card.Content extra>
-                <Icon name='world' />
-                Airports
-              </Card.Content>
-            </Card>
+          <BounceDown>
+            <Card.Group itemsPerRow={2}>
+              <Card style={styles.card} onClick={this.showAirports('blurring')}>
+                <Card.Content style={styles.cardHeader} header='Find Airports' />
+                <Card.Content style={styles.cardP} description="Search airports around the world and see their flight network." />
+                <Card.Content extra>
+                  <Icon name='world' />
+                  Airports
+                </Card.Content>
+              </Card>
 
-            <Card style={styles.card} onClick={this.showNearby('blurring')}>
-              <Card.Content style={styles.cardHeader} header='Nearby Airports' />
-              <Card.Content style={styles.cardP} description="Discover airports near you and see the network between them." />
-              <Card.Content extra>
-                <Icon name='compass' />
-                Nearby
-              </Card.Content>
-            </Card>
+              <Card style={styles.card} onClick={this.showNearby('blurring')}>
+                <Card.Content style={styles.cardHeader} header='Nearby Airports' />
+                <Card.Content style={styles.cardP} description="Discover airports near you and see the network between them." />
+                <Card.Content extra>
+                  <Icon name='compass' />
+                  Nearby
+                </Card.Content>
+              </Card>
 
-            <Card style={styles.card} onClick={this.showFlights('blurring')}>
-              <Card.Content style={styles.cardHeader} header='Active Flights' />
-              <Card.Content style={styles.cardP} description="Track hundreds of current active flights around the world." />
-              <Card.Content extra>
-                <Icon name='plane' />
-                Real-Time
-              </Card.Content>
-            </Card>
+              <Card style={styles.card} onClick={this.showFlights('blurring')}>
+                <Card.Content style={styles.cardHeader} header='Active Flights' />
+                <Card.Content style={styles.cardP} description="Track hundreds of current active flights around the world." />
+                <Card.Content extra>
+                  <Icon name='plane' />
+                  Real-Time
+                </Card.Content>
+              </Card>
 
-            <Card style={styles.card} onClick={this.showFavorites('blurring', 'small')}>
-              <Card.Content style={styles.cardHeader} header='Favorite Places' />
-              <Card.Content style={styles.cardP} description="My saved favorite destinations and their flight operations." />
-              <Card.Content extra>
-                <Icon name='heart' />
-                Favorites
-              </Card.Content>
-            </Card>
-          </Card.Group>
+              <Card style={styles.card} onClick={this.showFavorites('blurring', 'small')}>
+                <Card.Content style={styles.cardHeader} header='Favorite Places' />
+                <Card.Content style={styles.cardP} description="My saved favorite destinations and their flight operations." />
+                <Card.Content extra>
+                  <Icon name='heart' />
+                  Favorites
+                </Card.Content>
+              </Card>
+            </Card.Group>
           </BounceDown>
         </div>
 
@@ -157,7 +156,6 @@ const styles = {
   mainPage: {
     paddingTop: '6em',
     alignItems: 'center'
-
   },
   outerDiv: {
     width: '70%',
@@ -178,5 +176,5 @@ const styles = {
   },
   airportsModal: {
     paddingTop: '0.8em'
-  },
+  }
 }
