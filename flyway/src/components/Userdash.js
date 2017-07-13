@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Header, Image, Button, Modal, Input, Card, Icon } from 'semantic-ui-react'
+import { Button, Modal, Card, Icon } from 'semantic-ui-react'
 import { BounceDown } from 'animate-components'
 
 import Airports from './Airports'

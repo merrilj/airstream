@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Form, Radio, Input, Header, Image, Button, Modal, Grid, Segment } from 'semantic-ui-react'
+import { Form, Radio, Input } from 'semantic-ui-react'
 import L from 'leaflet'
 import IC from '../IC'
 import $ from 'jquery'
